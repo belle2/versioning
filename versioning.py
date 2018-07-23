@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""Management of software versions and global tags
+"""
+
+from distutils.version import StrictVersion
+
+
+def supported_release(release=None):
+    """
+    Check whether the given release is supported.
+    If release is None or the release is not supported it returns the recommended release.
+    """
+
+    supported_releases = ['release-01-00-04', 'release-01-02-11', 'release-02-00-00']
+    supported_light_releases = ['light-01-00-04']
+
+    # default is latest supported release
+    if release is None:
+        return supported_releases[-1]
+
+    def basf2_version(release):
+        return StrictVersion('.'.join(release.split('-')[1:]))
+
+    # update to next supported release
+    if release.startswith('pre'):
+        release = release[3:-1]
+    if release.startswith('release-'):
+        for supported in supported_releases:
+            if basf2_version(release) <= basf2_version(supported):
+                return supported
+
+    # update to next supported light release
+    if release.startswith('light-'):
+        return supported_light_releases[-1]
+
+    # latest supported release
+    return supported_releases[-1]
+
+    
+def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
+    """
+    Determine the recommended set of global tags for the given release, processing task, and tags used for the production of the input data.
+    """
+
+    global_tags = []
+
+    data_tags = {'release-01-00-04': 'data_reprocessing-release-01-02-04',
+                 'release-01-02-11': 'data_reprocessing-release-01-02-04',
+                 'release-02-00-00': None,
+                 'light-01-00-04': 'data_reprocessing-release-01-02-04',
+                 }
+    data_tag = data_tags[supported_release(release)]
+    if data_tag is None:
+        return input_tags
+    global_tags.append(data_tag)
+
+    if mc:
+        pass  # no mc tag yet
+
+    if analysis:
+        pass  # no analysis tag yet
+
+    return global_tags
