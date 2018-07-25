@@ -38,7 +38,7 @@ def supported_release(release=None):
     # latest supported release
     return supported_releases[-1]
 
-    
+
 def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
     """
     Determine the recommended set of global tags for the given release, processing task, and tags used for the production of the input data.
@@ -63,3 +63,20 @@ def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
         pass  # no analysis tag yet
 
     return global_tags
+
+
+def upload_global_tag(task):
+    """
+    Get the global tag that is supposed to be used for uploads for the given task.
+    """
+
+    if task == 'master':
+        return None
+    elif task == 'online':
+        return 'staging_online'
+    elif task == 'data':
+        return None
+    elif task == 'mc':
+        return None
+    elif task == 'analysis':
+        return None
