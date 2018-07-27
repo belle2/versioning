@@ -13,7 +13,7 @@ def supported_release(release=None):
     If release is None or the release is not supported it returns the recommended release.
     """
 
-    supported_releases = ['release-01-00-04', 'release-01-02-11', 'release-02-00-00']
+    supported_releases = ['release-01-00-04', 'release-01-02-11', 'release-02-00-01']
     supported_light_releases = ['light-01-00-04']
 
     # default is latest supported release
@@ -48,7 +48,7 @@ def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
 
     data_tags = {'release-01-00-04': 'data_reprocessing-release-01-02-04',
                  'release-01-02-11': 'data_reprocessing-release-01-02-04',
-                 'release-02-00-00': None,
+                 'release-02-00-01': None,
                  'light-01-00-04': 'data_reprocessing-release-01-02-04',
                  }
     data_tag = data_tags[supported_release(release)]
