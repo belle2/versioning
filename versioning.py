@@ -80,3 +80,28 @@ def upload_global_tag(task):
         return None
     elif task == 'analysis':
         return None
+
+
+def jira_global_tag(task):
+    """
+    Get the dictionary of the jira issue that will be created for a global tag update request.
+    For creating a sub-issue the parent key has to be set and the isssuetype id has to be 5.
+    The summary can be customized with a format string.
+    """
+
+    if task == 'master':
+        return None
+    elif task == 'online':
+        return {
+            "project": {"key": "BII"},
+            "parent": {"key": "BII-3887"},
+            "issuetype": {"id": "5"},
+            "assignee": {"name": "tkuhr"},
+            "summary": "Online global tag request by {user} at {time}"
+            }
+    elif task == 'data':
+        return None
+    elif task == 'mc':
+        return None
+    elif task == 'analysis':
+        return None
