@@ -31,9 +31,6 @@ def supported_release(release=None):
             if basf2_version(release) <= basf2_version(supported):
                 return supported
 
-    def b2light_version(release):
-        release.split('-')
-
     # update to next supported light release
     if release.startswith('light-'):
         for supported in supported_light_releases:
