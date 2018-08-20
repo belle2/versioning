@@ -4,7 +4,7 @@
 """Management of software versions and global tags
 """
 
-from distutils.version import StrictVersion
+from distutils.version import LooseVersion
 
 
 def supported_release(release=None):
@@ -21,7 +21,7 @@ def supported_release(release=None):
         return supported_releases[-1]
 
     def basf2_version(release):
-        return StrictVersion('.'.join(release.split('-')[1:]))
+        return LooseVersion('.'.join(release.split('-')[1:]))
 
     # update to next supported release
     if release.startswith('pre'):
@@ -31,9 +31,14 @@ def supported_release(release=None):
             if basf2_version(release) <= basf2_version(supported):
                 return supported
 
+    def b2light_version(release):
+        release.split('-')
+
     # update to next supported light release
     if release.startswith('light-'):
-        return supported_light_releases[-1]
+        for supported in supported_light_releases:
+            if basf2_version(release) <= basf2_version(supported):
+                return supported
 
     # latest supported release
     return supported_releases[-1]
