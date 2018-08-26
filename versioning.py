@@ -4,7 +4,7 @@
 """Management of software versions and global tags
 """
 
-from distutils.version import StrictVersion
+from distutils.version import LooseVersion
 
 
 def supported_release(release=None):
@@ -14,14 +14,14 @@ def supported_release(release=None):
     """
 
     supported_releases = ['release-01-00-04', 'release-01-02-11', 'release-02-00-01']
-    supported_light_releases = ['light-01-00-04']
+    supported_light_releases = ['light-01-00-04', 'light-02-arion']
 
     # default is latest supported release
     if release is None:
         return supported_releases[-1]
 
     def basf2_version(release):
-        return StrictVersion('.'.join(release.split('-')[1:]))
+        return LooseVersion('.'.join(release.split('-')[1:]))
 
     # update to next supported release
     if release.startswith('pre'):
@@ -33,7 +33,9 @@ def supported_release(release=None):
 
     # update to next supported light release
     if release.startswith('light-'):
-        return supported_light_releases[-1]
+        for supported in supported_light_releases:
+            if basf2_version(release) <= basf2_version(supported):
+                return supported
 
     # latest supported release
     return supported_releases[-1]
@@ -50,6 +52,7 @@ def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
                  'release-01-02-11': 'data_reprocessing-release-01-02-04',
                  'release-02-00-01': None,
                  'light-01-00-04': 'data_reprocessing-release-01-02-04',
+                 'light-02-arion': 'data_reprocessing_prod5',
                  }
     data_tag = data_tags[supported_release(release)]
     if data_tag is None:
