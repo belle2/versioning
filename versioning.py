@@ -14,7 +14,7 @@ def supported_release(release=None):
     """
 
     supported_releases = ['release-01-00-04', 'release-01-02-11', 'release-02-00-01']
-    supported_light_releases = ['light-01-00-04', 'light-02-arion']
+    supported_light_releases = ['light-02-arion', 'light-02-bremen']
 
     # default is latest supported release
     if release is None:
