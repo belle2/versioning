@@ -54,7 +54,7 @@ def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
                  'light-01-00-04': 'data_reprocessing-release-01-02-04',
                  'light-02-arion': 'data_reprocessing_prod5',
                  }
-    data_tag = data_tags[supported_release(release)]
+    data_tag = data_tags.get(supported_release(release), None)
     if data_tag is None:
         return input_tags
     global_tags.append(data_tag)
