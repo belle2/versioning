@@ -96,13 +96,7 @@ def jira_global_tag(task):
     if task == 'master':
         return None
     elif task == 'online':
-        return {
-            "project": {"key": "BII"},
-            "parent": {"key": "BII-3887"},
-            "issuetype": {"id": "5"},
-            "assignee": {"name": "tkuhr"},
-            "summary": "Online global tag request by {user} at {time}"
-            }
+        return None
     elif task == 'data':
         return None
     elif task == 'mc':
