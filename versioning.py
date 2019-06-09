@@ -13,7 +13,7 @@ def supported_release(release=None):
     If release is None or the release is not supported it returns the recommended release.
     """
 
-    supported_releases = ['release-02-00-02', 'release-02-01-00', 'release-03-01-04']
+    supported_releases = ['release-02-00-02', 'release-02-01-00', 'release-03-01-04', 'release-03-02-00']
     supported_light_releases = ['light-1904-elbe']
 
     # default is latest supported release
