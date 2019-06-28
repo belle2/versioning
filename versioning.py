@@ -15,7 +15,7 @@ def supported_release(release=None):
 
     supported_releases = [
         'release-02-00-02', 'release-02-01-00', 
-        'release-03-01-04', 'release-03-02-01']
+        'release-03-01-04', 'release-03-02-02']
     supported_light_releases = ['light-1906-firebird']
 
     # default is latest supported release
