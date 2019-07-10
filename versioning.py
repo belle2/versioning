@@ -204,7 +204,8 @@ def jira_global_tag(task):
     """
 
     result = jira_global_tag_v2(task)
-    if result is None return result
+    if result is None:
+        return result
 
     if type(result) is tuple:  # ignore adjusted description
         result = result[0]
