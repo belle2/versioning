@@ -200,19 +200,55 @@ def upload_global_tag(task):
 
 def jira_global_tag(task):
     """
-    Get the dictionary of the jira issue that will be created for a global tag update request.
+    See jira_global_tag_v2. This function is only provided for backward compatibility.
+    """
+
+    result = jira_global_tag_v2(task)
+    if result is None:
+        return result
+
+    if type(result) is tuple:  # ignore adjusted description
+        result = result[0]
+    if type(result) is str:    # use sub-issue instead of comment
+        result = {
+            "parent": {"key": result},
+            "issuetype": {"id": "5"},
+            }
+    if "project" not in result.keys():
+        result["project"] = {"key": "BII"}
+    if "issuetype" not in result.keys():
+        result["issuetype"] = {"name": "Task"}
+
+    return result
+
+
+def jira_global_tag_v2(task):
+    """
+    For a global tag update request, get the dictionary of the jira issue that will be created
+    or a string with an issue key if a comment should be added to an existing issue.
+    The dictionary can be empty. Then the default is to create an unassigned Task issue in the BII project.
     For creating a sub-issue the parent key has to be set and the isssuetype id has to be 5.
     The summary can be customized with a format string. Possible format keys are
 
+    * tag: the upload GT name
     * user: the user name of the person who requests the GT update
     * reason: the reason for the update given by he user
     * release: the required release as specified by the user
     * request: the type of request: Addition, Update, or Change
-    * master/online/data/mc/analysis: name of the GT
     * task: the task = parameter of this function
     * time: the time stamp of the request
 
-    The following example shows how to create a sub-issue (type id 5) of BII-12345 in the BII project
+    A tuple can be used to customize the description. The first element is then the dictionary
+    or string of the jira issue and the second element a format string for the description.
+    The same fields as for the summary can be used for the description.
+
+    The following examples show
+
+    A) how to create a new jira issue in the BII project assigned to to user janedoe:
+
+        return {"assignee": {"name": "janedoe"}}
+
+    B) how to create a sub-issue (type id 5) of BII-12345 in the BII project
     assigned to user janedoe and a summary text containing the user name and time of the request::
 
         return {
@@ -223,12 +259,21 @@ def jira_global_tag(task):
             "summary": "Example global tag request by {user} at {time}"
             }
 
+    C) how to add a comment to BII-12345::
+
+        return "BII-12345"
+
+    D) how to add a comment to BII-12345 with adjusted description containing only the global tag name
+    and the reason for a request::
+
+        return ("BII-12345", "Example comment for the global tag {tag} because of: {reason}")
 
     Parameters:
       task (str): An identifier of the task. Supported values are 'master', 'online', 'prompt', data', 'mc', 'analysis'
 
     Returns:
-      The dictionary for the creation of a jira issue or None if no jira issue should be created.
+      The dictionary for the creation of a jira issue or a string for adding a comment to an
+      existing issue or a tuple for an adjusted description or None if no jira issue should be created.
     """
 
     if task == 'master':
