@@ -10,10 +10,11 @@ from distutils.version import LooseVersion
 # list of supported releases, the last one is the recommended one
 _supported_releases = [
     'release-02-00-02', 'release-02-01-00',
-    'release-03-01-04', 'release-03-02-02']
+    'release-03-01-04', 'release-03-02-03']
 
 # list of supported light releases
-_supported_light_releases = ['light-1906-firebird']
+_supported_light_releases = [
+    'light-1906-firebird', 'light-1907-golfo']
 
 
 def supported_release(release=None):
