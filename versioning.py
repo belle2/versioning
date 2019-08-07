@@ -151,27 +151,108 @@ def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
       The list of recommended GTs.
     """
 
-    global_tags = []
+    metadata = None
+    if not mc:
+        metadata = [{'release': None}]
 
-    data_tags = {'release-02-00-02': None,
-                 'release-02-01-00': None,
-                 'release-03-01-04': 'data_reprocessing_proc8',
-                 }
-    data_tag = data_tags.get(supported_release(release), None)
+    result = recommended_global_tags_v2(release, input_tags, None, metadata)
 
-    # if no tag is explicitly set the default is to take the input GTs
-    if data_tag is None:
-        return input_tags
+    return result['tags']
 
-    global_tags.append(data_tag)
 
-    if mc:
-        pass  # no mc tag yet
+def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
+    """
+    Determine the recommended set of global tags for the given conditions.
 
-    if analysis:
-        pass  # no analysis tag yet
+    This function is called by b2conditionsdb-recommend and it may be called
+    by conditions configuration callbacks. While it is in principle not limited
+    to the use case of end user analysis this is expected to be the main case
+    as in the other cases the production manager will most likely set the
+    global tags explicitly in the steering file.
 
-    return global_tags
+    Parameters:
+      release (str): The release version that the user has set up.
+      base_tags (list(str)): The global tags of the input files or default global tags in case of no input.
+      user_tags (list(str)): The global tags provided by the user.
+      metadata (list): The EventMetaData objects of the input files or None in case of no input.
+
+    Returns:
+      A dictionary with the following keys:
+        tags   : list of recommended global tags (mandatory)
+        message: a text message for the user (optional)
+        release: a recommended release (optional)
+    """
+
+    # gather information that we may want to use for the decision about the recommended GT:
+    # existing GTs, release used to create the input data
+    existing_master_tags = [tag for tag in base_tags if tag.startswith('master_') or tag.startswith('release-')]
+    existing_data_tags = [tag for tag in base_tags if tag.startswith('data_')]
+    existing_mc_tags = [tag for tag in base_tags if tag.startswith('mc_')]
+    existing_analysis_tags = [tag for tag in base_tags if tag.startswith('analysis_')]
+    data_release = metadata[0]['release'] if metadata else None
+
+    # now construct the recommmendation
+    result = {'tags': [], 'message': ''}
+
+    # recommended release
+    recommended_release = supported_release(release)
+    if (release.startswith('release') or release.startswith('light')) and recommended_release != release:
+        result['message'] += 'You are using %s, but we recommend to use %s.\n' % (release, recommended_release)
+        result['release'] = recommended_release
+
+    # tag to be used for (raw) data processing, depending on the release used for the processing
+    # data_tags provides a mapping of supported release to the recommended data GT
+    data_tags = {_supported_releases[-1]: 'data_reprocessing_proc9'}
+    data_tag = data_tags.get(recommended_release, None)
+
+    # tag to be used for run-dependent MC production, depending on the release used for the production
+    # mc_tags provides a mapping of supported release to the recommended mc GT
+    mc_tags = {_supported_releases[-1]: 'mc_production_mc12'}
+    mc_tag = mc_tags.get(recommended_release, None)
+
+    # tag to be used for analysis tools, depending on the release used for the analysis
+    # analysis_tags provides a mapping of supported release to the recommended analysis GT
+    analysis_tags = {_supported_releases[-1]: 'analysis_tools_release-03-02-00'}
+    analysis_tag = analysis_tags.get(recommended_release, None)
+
+    # In case of B2BII we do not have metadata
+    if metadata == []:
+        result['tags'] = ['B2BII']
+
+    else:
+        # If we have a master GT this means either we are generating events
+        # or we read a file that was produced with it. So we keep it as last GT.
+        result['tags'] += existing_master_tags
+
+        # Always use online GT
+        result['tags'].insert(0, 'online')
+
+        # Prepend the data GT
+        if data_tag:
+            result['tags'].insert(0, data_tag)
+        else:
+            result['message'] += 'WARNING: There is no recommended data global tag.'
+
+        # Prepend the MC GT if we generate events (no metadata)
+        # or if we read a file that was produced with a MC GT
+        if metadata is None or existing_mc_tags:
+            if mc_tag:
+                result['tags'].insert(0, mc_tag)
+            else:
+                result['message'] += 'WARNING: There is no recommended mc global tag.'
+
+    # Prepend the analysis GT
+    if analysis_tag:
+        result['tags'].insert(0, analysis_tag)
+    else:
+        result['message'] += 'WARNING: There is no recommended analysis global tag.'
+
+    # What else do we want to tell the user?
+    if result['tags'] != base_tags:
+        result['message'] += 'The recommended tags differ from the base tags: %s' % ' '.join(base_tags) + '\n'
+        result['message'] += 'Use the default conditions configuration if you want to take the base tags.\n'
+
+    return result
 
 
 def upload_global_tag(task):
