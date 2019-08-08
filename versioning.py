@@ -227,11 +227,12 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         # Always use online GT
         result['tags'].insert(0, 'online')
 
-        # Prepend the data GT
-        if data_tag:
-            result['tags'].insert(0, data_tag)
-        else:
-            result['message'] += 'WARNING: There is no recommended data global tag.'
+        # Prepend the data GT if the file is not MC
+        if metadata is None or not bool(metadata[0]['isMC']):
+            if data_tag:
+                result['tags'].insert(0, data_tag)
+            else:
+                result['message'] += 'WARNING: There is no recommended data global tag.'
 
         # Prepend the MC GT if we generate events (no metadata)
         # or if we read a file that was produced with a MC GT
