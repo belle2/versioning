@@ -195,7 +195,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     if metadata:
         is_mc = bool(metadata[0]['isMC'])
         experiments = [int(metadata[0]['experimentLow']), int(metadata[0]['experimentHigh'])]
-        is_run_independent_mc = is_mc and all(experiments) in [0, 1002, 1003]
+        is_run_independent_mc = experiments[0] == experiments[1] and experiments[0] in [0, 1002, 1003]
     else:
         is_run_independent_mc = False
     
