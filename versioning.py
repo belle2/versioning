@@ -260,13 +260,15 @@ def upload_global_tag(task):
     Get the global tag that is supposed to be used for uploads for the given task.
 
     Parameters:
-      task (str): An identifier of the task. Supported values are 'master', 'online', 'prompt', data', 'mc', 'analysis'
+      task (str): An identifier of the task. Supported values are 'master', 'validation', 'online', 'prompt', data', 'mc', 'analysis'
 
     Returns:
       The name of the GT for uploads or None if a new GT should be created by the client for each upload request.
     """
 
     if task == 'master':
+        return None
+    elif task == 'validation':
         return None
     elif task == 'online':
         return 'staging_online'
@@ -351,7 +353,7 @@ def jira_global_tag_v2(task):
         return ("BII-12345", "Example comment for the global tag {tag} because of: {reason}")
 
     Parameters:
-      task (str): An identifier of the task. Supported values are 'master', 'online', 'prompt', data', 'mc', 'analysis'
+      task (str): An identifier of the task. Supported values are 'master', 'validation', 'online', 'prompt', data', 'mc', 'analysis'
 
     Returns:
       The dictionary for the creation of a jira issue or a string for adding a comment to an
@@ -359,6 +361,8 @@ def jira_global_tag_v2(task):
     """
 
     if task == 'master':
+        return None
+    elif task == 'validation':
         return None
     elif task == 'online':
         return None
