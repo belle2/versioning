@@ -361,16 +361,16 @@ def jira_global_tag_v2(task):
     """
 
     if task == 'master':
-        return None
+        return {"assignee": {"name": "ritter"}}
     elif task == 'validation':
-        return None
+        return {"assignee": {"name": "jikumar"}}
     elif task == 'online':
-        return None
+        return {"assignee": {"name": "chunhua"}}
     elif task == 'prompt':
-        return None
+        return {"assignee": {"name": "tamponi"}}
     elif task == 'data':
-        return None
+        return {"assignee": {"name": "tamponi"}}
     elif task == 'mc':
-        return None
+        return {"assignee": {"name": "jbennett"}}
     elif task == 'analysis':
-        return None
+        return {"assignee": {"name": "scunliff"}}
