@@ -9,8 +9,8 @@ from distutils.version import LooseVersion
 
 # list of supported releases, the last one is the recommended one
 _supported_releases = [
-    'release-02-00-02', 'release-02-01-00',
-    'release-03-01-04', 'release-03-02-04']
+    'release-03-01-04', 'release-03-02-04',
+    'release-04-00-00']
 
 # list of supported light releases
 _supported_light_releases = [
