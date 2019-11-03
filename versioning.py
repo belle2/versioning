@@ -373,4 +373,4 @@ def jira_global_tag_v2(task):
     elif task == 'mc':
         return {"assignee": {"name": "jbennett"}}
     elif task == 'analysis':
-        return {"assignee": {"name": "scunliff"}}
+        return {"assignee": {"name": "fmeier"}}
