@@ -14,7 +14,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-1906-firebird', 'light-1907-golfo']
+    'light-1907-golfo', 'light-1911-heracles']
 
 
 def supported_release(release=None):
