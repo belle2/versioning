@@ -5,6 +5,10 @@
 """
 
 from distutils.version import LooseVersion
+import json
+import os
+import tempfile
+import shutil
 
 
 # list of supported releases, the last one is the recommended one
@@ -374,3 +378,47 @@ def jira_global_tag_v2(task):
         return {"assignee": {"name": "jbennett"}}
     elif task == 'analysis':
         return {"assignee": {"name": "fmeier"}}
+
+
+def create_jupyter_kernels(target_dir='~/.local/share/jupyter/kernels', top_dir='/cvmfs/belle.cern.ch'):
+    """
+    Create or update jupyter kernel files for the supported (light) releases
+
+    Parameters:
+      target_dir (str): The directory where the kernel files should be created.
+      top_dir (str): The Belle II software top directory.
+    """
+
+    target_dir = os.path.expanduser(target_dir)
+    top_dir = os.path.expanduser(top_dir)
+    tools_dir = os.path.join(top_dir, "tools")
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+
+    for release in _supported_releases + _supported_light_releases:
+        name = release
+        if name.startswith("release"):
+            name = release.rsplit("-", 1)[0]  # remove patch version from name
+        kernel_dir = os.path.join(target_dir, "belle2_" + name)
+        if not os.path.exists(kernel_dir):
+            os.mkdir(kernel_dir)
+        if os.path.exists(os.path.join(tools_dir, "logo-64x64.png")):
+            shutil.copy(os.path.join(tools_dir, "logo-64x64.png"), kernel_dir)
+            shutil.copy(os.path.join(tools_dir, "logo-32x32.png"), kernel_dir)
+        spec = {
+            "display_name": "Belle2 (" + release + ")",
+            "language": "python",
+            "argv": [
+                os.path.join(top_dir, "tools", "b2execute"), "-x", "python3",
+                release, "-m", "ipykernel_launcher",
+                "-f", "{connection_file}",
+            ],
+            "env": {
+                "VO_BELLE2_SW_DIR": top_dir,
+                "BELLE2_TOOLS": tools_dir
+            }
+        }
+        with open(os.path.join(kernel_dir, "kernel.json"), "w") as specfile:
+            json.dump(spec, specfile, indent=4)
+
+        print("Created kernel for " + release)
