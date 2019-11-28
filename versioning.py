@@ -195,6 +195,15 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     existing_analysis_tags = [tag for tag in base_tags if tag.startswith('analysis_')]
     data_release = metadata[0]['release'] if metadata else None
 
+    # if this is run-independent MC we dont want to show data tags (all other cases, we do)
+    if metadata:
+        is_mc = bool(metadata[0]['isMC'])
+        experiments = [int(metadata[0]['experimentLow']), int(metadata[0]['experimentHigh'])]
+        is_run_independent_mc = experiments[0] == experiments[1] and experiments[0] in [0, 1002, 1003]
+    else:
+        is_run_independent_mc = False
+    
+
     # now construct the recommmendation
     result = {'tags': [], 'message': ''}
 
@@ -231,11 +240,12 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         # Always use online GT
         result['tags'].insert(0, 'online')
 
-        # Prepend the data GT
-        if data_tag:
-            result['tags'].insert(0, data_tag)
-        else:
-            result['message'] += 'WARNING: There is no recommended data global tag.'
+        # Prepend the data GT if the file is not run-independent MC
+        if metadata is None or not is_run_independent_mc:
+            if data_tag:
+                result['tags'].insert(0, data_tag)
+            else:
+                result['message'] += 'WARNING: There is no recommended data global tag.'
 
         # Prepend the MC GT if we generate events (no metadata)
         # or if we read a file that was produced with a MC GT
