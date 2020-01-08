@@ -14,7 +14,7 @@ import shutil
 # list of supported releases, the last one is the recommended one
 _supported_releases = [
     'release-03-01-04', 'release-03-02-04',
-    'release-04-00-04', 'release-04-01-00',
+    'release-04-00-04', 'release-04-01-01',
 ]
 
 # list of supported light releases
@@ -203,7 +203,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         is_run_independent_mc = experiments[0] == experiments[1] and experiments[0] in [0, 1002, 1003]
     else:
         is_run_independent_mc = False
-    
+
 
     # now construct the recommmendation
     result = {'tags': [], 'message': ''}
