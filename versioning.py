@@ -19,7 +19,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-1907-golfo', 'light-1911-heracles']
+    'light-1911-heracles', 'light-1912-icarus']
 
 
 def supported_release(release=None):
@@ -226,7 +226,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
 
     # tag to be used for analysis tools, depending on the release used for the analysis
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
-    analysis_tags = {_supported_releases[-1]: 'analysis_tools_release-03-02-00'}
+    analysis_tags = {_supported_releases[-1]: 'analysis_tools_release-04'}
     analysis_tag = analysis_tags.get(recommended_release, None)
 
     # In case of B2BII we do not have metadata
