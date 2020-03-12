@@ -19,7 +19,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-1911-heracles', 'light-1912-icarus']
+    'light-1912-icarus', 'light-2002-janus']
 
 
 def supported_release(release=None):
