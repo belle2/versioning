@@ -94,7 +94,7 @@ def create_release_html(filename='index.html'):
 <li><a href="https://confluence.desy.de/display/BI/Belle+II">Wiki</a></li>
 <li><a href="https://stash.desy.de/projects/B2/repos/software/browse">Git</a></li>
 <li><a href="https://agira.desy.de/projects/BII">Issues</a></li>
-<li><a href="/development_build/index.html">Development Build</a></li>
+<li><a href="https://b2-master.belle2.org/development_build/index.html">Development Build</a></li>
 </ul>
 </div>
 </div>
