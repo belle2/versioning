@@ -134,8 +134,10 @@ and from http://www.famfamfam.com under the <a href="http://creativecommons.org/
     for supported in reversed(_supported_releases):
         table += ('<tr class="even">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' % (supported, supported, recommended, supported, supported))
         recommended = ''
+    recommended = ' (recommended)'
     for supported in reversed(_supported_light_releases):
-        table += ('<tr class="odd">\n<td><a href="sphinx/%s/index.html"><b>%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' % (supported, supported, supported, supported))
+        table += ('<tr class="odd">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' % (supported, supported, recommended, supported, supported))
+        recommended = ''
     table += '<tr class="even">\n<td><a href="development/sphinx/index.html"><b>development</b></a></td>\n<td><a href="development/index.html"><b>development</b></a></td>\n</tr>\n'
     with open(filename, 'w') as htmlfile:
         htmlfile.write(page % table)
