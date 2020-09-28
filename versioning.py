@@ -288,7 +288,7 @@ def upload_global_tag(task):
     elif task == 'validation':
         return None
     elif task == 'online':
-        return 'staging_online'
+        return None
     elif task == 'prompt':
         return None
     elif task == 'data':
@@ -382,7 +382,7 @@ def jira_global_tag_v2(task):
     elif task == 'validation':
         return {"assignee": {"name": "jikumar"}}
     elif task == 'online':
-        return {"assignee": {"name": "chunhua"}}
+        return {"assignee": {"name": "ritter"}}
     elif task == 'prompt':
         return {"assignee": {"name": "tamponi"}}
     elif task == 'data':
