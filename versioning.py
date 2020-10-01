@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Management of software versions and global tags
+"""
+Management of software versions and global tags.
 """
 
 from distutils.version import LooseVersion
@@ -14,12 +15,13 @@ import shutil
 # list of supported releases, the last one is the recommended one
 _supported_releases = [
     'release-04-00-05', 'release-04-01-05', 'release-04-02-08',
-    'release-05-00-01',
+    'release-05-00-01', 'release-05-01-00',
 ]
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2002-ichep', 'light-2008-kronos']
+    'light-2002-ichep', 'light-2008-kronos'
+]
 
 
 def supported_release(release=None):
