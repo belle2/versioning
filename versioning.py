@@ -15,7 +15,7 @@ import shutil
 # list of supported releases, the last one is the recommended one
 _supported_releases = [
     'release-04-00-05', 'release-04-01-05', 'release-04-02-08',
-    'release-05-00-01', 'release-05-01-03',
+    'release-05-00-01', 'release-05-01-04',
 ]
 
 # list of supported light releases
