@@ -20,7 +20,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2002-ichep', 'light-2008-kronos'
+    'light-2002-ichep', 'light-2010-leto'
 ]
 
 
