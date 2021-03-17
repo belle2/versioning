@@ -36,9 +36,9 @@ def supported_release(release=None):
       The name of the supported release that best matches the release given as input parameter.
     """
 
-    # default is latest supported release
+    # default is latest supported light release
     if release is None:
-        return _supported_releases[-1]
+        return _supported_light_releases[-1]
 
     def basf2_version(release):
         return LooseVersion('.'.join(release.split('-')[1:]))
