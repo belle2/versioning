@@ -11,8 +11,10 @@ import os
 import tempfile
 import shutil
 
+# recommended release
+_recommended_release = 'light-2103-oceanos'
 
-# list of supported releases, the last one is the recommended one
+# list of supported full releases
 _supported_releases = [
     'release-04-02-09',
     'release-05-01-20', 'release-05-02-04'
@@ -36,9 +38,9 @@ def supported_release(release=None):
       The name of the supported release that best matches the release given as input parameter.
     """
 
-    # default is latest supported release
+    # default is hard-coded release given above
     if release is None:
-        return _supported_releases[-1]
+        return _recommended_release
 
     def basf2_version(release):
         return LooseVersion('.'.join(release.split('-')[1:]))
@@ -52,7 +54,7 @@ def supported_release(release=None):
                 return supported
 
     # update to latest supported light release
-    if release.startswith('light-'):
+    if release.startswith('light'):
         if release in _supported_light_releases:
             return release
         else:
