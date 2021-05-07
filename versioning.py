@@ -12,7 +12,7 @@ import tempfile
 import shutil
 
 # recommended release
-_recommended_release = 'light-2103-oceanos'
+_recommended_release = 'light-2104-poseidon'
 
 # list of supported full releases
 _supported_releases = [
@@ -22,7 +22,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2012-minos', 'light-2102-nemesis', 'light-2103-oceanos'
+    'light-2012-minos', 'light-2102-nemesis', 'light-2104-poseidon'
 ]
 
 
@@ -66,7 +66,7 @@ def supported_release(release=None):
 
 def create_release_html(filename='index.html'):
     """
-    Create a html file with the links to the sphinx and doxygen documentations of the supported releses.
+    Create a html file with the links to the sphinx and doxygen documentations of the supported releases.
 
     Parameters:
       filename (str): The name the html file.
@@ -203,7 +203,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     existing_analysis_tags = [tag for tag in base_tags if tag.startswith('analysis_')]
     data_release = metadata[0]['release'] if metadata else None
 
-    # if this is run-independent MC we dont want to show data tags (all other cases, we do)
+    # if this is run-independent MC we don't want to show data tags (all other cases, we do)
     if metadata:
         is_mc = bool(metadata[0]['isMC'])
         experiments = [int(metadata[0]['experimentLow']), int(metadata[0]['experimentHigh'])]
@@ -212,7 +212,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         is_run_independent_mc = False
 
 
-    # now construct the recommmendation
+    # now construct the recommendation
     result = {'tags': [], 'message': ''}
 
     # recommended release
@@ -333,7 +333,7 @@ def jira_global_tag_v2(task):
     For a global tag update request, get the dictionary of the jira issue that will be created
     or a string with an issue key if a comment should be added to an existing issue.
     The dictionary can be empty. Then the default is to create an unassigned Task issue in the BII project.
-    For creating a sub-issue the parent key has to be set and the isssuetype id has to be 5.
+    For creating a sub-issue the parent key has to be set and the issuetype id has to be 5.
     The summary can be customized with a format string. Possible format keys are
 
     * tag: the upload GT name
