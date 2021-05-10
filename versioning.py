@@ -17,7 +17,7 @@ _recommended_release = 'light-2104-poseidon'
 # list of supported full releases
 _supported_releases = [
     'release-04-02-09',
-    'release-05-01-20', 'release-05-02-04'
+    'release-05-01-22', 'release-05-02-06'
 ]
 
 # list of supported light releases
