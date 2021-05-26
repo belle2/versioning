@@ -71,6 +71,11 @@ def supported_release(release=None):
     return _supported_releases[-1]
 
 
+def get_recommended_training_release():
+    """Returns the recommended relase for training purposes"""
+    return supported_release("release-")
+
+
 def create_release_html(filename='index.html'):
     """
     Create a html file with the links to the sphinx and doxygen documentations of the supported releases.
