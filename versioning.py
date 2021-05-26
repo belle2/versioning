@@ -396,7 +396,7 @@ def jira_global_tag_v2(task):
     """
 
     if task == 'master':
-        return {"assignee": {"name": "ritter"}}
+        return {"assignee": {"name": "depietro"}}
     elif task == 'validation':
         return {"assignee": {"name": "jikumar"}}
     elif task == 'online':
