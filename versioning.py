@@ -25,6 +25,9 @@ _supported_light_releases = [
     'light-2012-minos', 'light-2102-nemesis', 'light-2104-poseidon'
 ]
 
+assert _supported_releases == sorted(_supported_releases)
+assert _supported_light_releases == sorted(_supported_light_releases)
+
 
 def supported_release(release=None):
     """
