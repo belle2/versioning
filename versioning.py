@@ -25,6 +25,9 @@ _supported_light_releases = [
     'light-2012-minos', 'light-2102-nemesis', 'light-2104-poseidon'
 ]
 
+assert _supported_releases == sorted(_supported_releases)
+assert _supported_light_releases == sorted(_supported_light_releases)
+
 
 def supported_release(release=None):
     """
@@ -48,7 +51,11 @@ def supported_release(release=None):
     # update to next supported release
     if release.startswith('pre'):
         release = release[3:19]
-    if release.startswith('release-'):
+
+    if release == "release-":
+        # Return the latest full release
+        return _supported_releases[-1]
+    elif release.startswith('release-'):
         for supported in _supported_releases:
             if basf2_version(release) <= basf2_version(supported):
                 return supported
@@ -62,6 +69,11 @@ def supported_release(release=None):
 
     # latest supported release
     return _supported_releases[-1]
+
+
+def get_recommended_training_release():
+    """Returns the recommended relase for training purposes"""
+    return supported_release("release-")
 
 
 def create_release_html(filename='index.html'):
