@@ -48,7 +48,11 @@ def supported_release(release=None):
     # update to next supported release
     if release.startswith('pre'):
         release = release[3:19]
-    if release.startswith('release-'):
+
+    if release == "release-":
+        # Return the latest full release
+        return _supported_releases[-1]
+    elif release.startswith('release-'):
         for supported in _supported_releases:
             if basf2_version(release) <= basf2_version(supported):
                 return supported
