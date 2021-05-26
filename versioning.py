@@ -147,7 +147,7 @@ and from http://www.famfamfam.com under the <a href="http://creativecommons.org/
         htmlfile.write(page % table)
 
 
-def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
+def recommended_global_tags(release, mc=False, analysis=True, input_tags=None):
     """
     Determine the recommended set of global tags for the given conditions
     release, processing task, and tags used for the production of the input data.
@@ -156,11 +156,13 @@ def recommended_global_tags(release, mc=False, analysis=True, input_tags=[]):
       release (str): The release version that the user has set up.
       mc (bool): Whether the MC GT should be added. Used for run-dependent MC.
       analysis (bool): Whether the analysis GT should be added. Used for skimming and analysis.
-      input_tags (list): The list of GTs used to produce the input file.
+      input_tags (Optional(list)): The list of GTs used to produce the input file.
 
     Returns:
       The list of recommended GTs.
     """
+    if input_tags is None:
+        input_tags = []
 
     metadata = None
     if not mc:
