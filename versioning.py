@@ -8,7 +8,6 @@ Management of software versions and global tags.
 from distutils.version import LooseVersion
 import json
 import os
-import tempfile
 import shutil
 
 # recommended release
