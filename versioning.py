@@ -11,7 +11,7 @@ import os
 import shutil
 
 # recommended release
-_recommended_release = 'light-2104-poseidon'
+_recommended_release = 'light-2106-rhea'
 
 # list of supported full releases
 _supported_releases = [
@@ -21,7 +21,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2012-minos', 'light-2102-nemesis', 'light-2104-poseidon'
+    'light-2012-minos', 'light-2104-poseidon', 'light-2106-rhea'
 ]
 
 assert _supported_releases == sorted(_supported_releases)
