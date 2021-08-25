@@ -148,11 +148,15 @@ and from http://www.famfamfam.com under the <a href="http://creativecommons.org/
     table = ""
     recommended = ' (recommended)'
     for supported in reversed(_supported_releases):
-        table += ('<tr class="even">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' % (supported, supported, recommended, supported, supported))
+        table += (
+            '<tr class="even">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' %
+            (supported, supported, recommended, supported, supported))
         recommended = ''
     recommended = ' (recommended)'
     for supported in reversed(_supported_light_releases):
-        table += ('<tr class="odd">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' % (supported, supported, recommended, supported, supported))
+        table += (
+            '<tr class="odd">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' %
+            (supported, supported, recommended, supported, supported))
         recommended = ''
     table += '<tr class="even">\n<td><a href="development/sphinx/index.html"><b>development</b></a></td>\n<td><a href="development/index.html"><b>development</b></a></td>\n</tr>\n'
     with open(filename, 'w') as htmlfile:
@@ -210,7 +214,8 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
 
     # gather information that we may want to use for the decision about the recommended GT:
     # existing GTs, release used to create the input data
-    existing_master_tags = [tag for tag in base_tags if tag.startswith('master_') or tag.startswith('release-')]
+    existing_master_tags = [tag for tag in base_tags if tag.startswith('main_') or tag.startswith(
+        'master_') or tag.startswith('release-') or tag.startswith('prerelease-')]
     existing_data_tags = [tag for tag in base_tags if tag.startswith('data_')]
     existing_mc_tags = [tag for tag in base_tags if tag.startswith('mc_')]
     existing_analysis_tags = [tag for tag in base_tags if tag.startswith('analysis_')]
@@ -223,7 +228,6 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         is_run_independent_mc = experiments[0] == experiments[1] and experiments[0] in [0, 1002, 1003]
     else:
         is_run_independent_mc = False
-
 
     # now construct the recommendation
     result = {'tags': [], 'message': ''}
@@ -303,6 +307,8 @@ def upload_global_tag(task):
 
     if task == 'master':
         return None
+    elif task == 'main':
+        return None
     elif task == 'validation':
         return None
     elif task == 'online':
@@ -326,13 +332,13 @@ def jira_global_tag(task):
     if result is None:
         return result
 
-    if type(result) is tuple:  # ignore adjusted description
+    if isinstance(result, tuple):  # ignore adjusted description
         result = result[0]
-    if type(result) is str:    # use sub-issue instead of comment
+    if isinstance(result, str):    # use sub-issue instead of comment
         result = {
             "parent": {"key": result},
             "issuetype": {"id": "5"},
-            }
+        }
     if "project" not in result.keys():
         result["project"] = {"key": "BII"}
     if "issuetype" not in result.keys():
@@ -396,6 +402,8 @@ def jira_global_tag_v2(task):
     """
 
     if task == 'master':
+        return {"assignee": {"name": "depietro"}}
+    elif task == 'main':
         return {"assignee": {"name": "depietro"}}
     elif task == 'validation':
         return {"assignee": {"name": "jikumar"}}
