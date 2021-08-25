@@ -214,7 +214,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
 
     # gather information that we may want to use for the decision about the recommended GT:
     # existing GTs, release used to create the input data
-    existing_master_tags = [tag for tag in base_tags if tag.startswith('main_') or tag.startswith(
+    existing_main_tags = [tag for tag in base_tags if tag.startswith('main_') or tag.startswith(
         'master_') or tag.startswith('release-') or tag.startswith('prerelease-')]
     existing_data_tags = [tag for tag in base_tags if tag.startswith('data_')]
     existing_mc_tags = [tag for tag in base_tags if tag.startswith('mc_')]
@@ -258,9 +258,9 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         result['tags'] = ['B2BII']
 
     else:
-        # If we have a master GT this means either we are generating events
+        # If we have a main GT this means either we are generating events
         # or we read a file that was produced with it. So we keep it as last GT.
-        result['tags'] += existing_master_tags
+        result['tags'] += existing_main_tags
 
         # Always use online GT
         result['tags'].insert(0, 'online')
@@ -299,13 +299,13 @@ def upload_global_tag(task):
     Get the global tag that is supposed to be used for uploads for the given task.
 
     Parameters:
-      task (str): An identifier of the task. Supported values are 'master', 'validation', 'online', 'prompt', data', 'mc', 'analysis'
+      task (str): An identifier of the task. Supported values are 'master', 'main',  'validation', 'online', 'prompt', data', 'mc', 'analysis'
 
     Returns:
       The name of the GT for uploads or None if a new GT should be created by the client for each upload request.
     """
 
-    if task == 'master':
+    if task == 'master': # master is kept only for backward compatibility
         return None
     elif task == 'main':
         return None
@@ -394,14 +394,14 @@ def jira_global_tag_v2(task):
         return ("BII-12345", "Example comment for the global tag {tag} because of: {reason}")
 
     Parameters:
-      task (str): An identifier of the task. Supported values are 'master', 'validation', 'online', 'prompt', data', 'mc', 'analysis'
+      task (str): An identifier of the task. Supported values are 'master', 'main', 'validation', 'online', 'prompt', data', 'mc', 'analysis'
 
     Returns:
       The dictionary for the creation of a jira issue or a string for adding a comment to an
       existing issue or a tuple for an adjusted description or None if no jira issue should be created.
     """
 
-    if task == 'master':
+    if task == 'master': # master is kept only for backward compatibility
         return {"assignee": {"name": "depietro"}}
     elif task == 'main':
         return {"assignee": {"name": "depietro"}}
