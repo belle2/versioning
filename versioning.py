@@ -299,13 +299,13 @@ def upload_global_tag(task):
     Get the global tag that is supposed to be used for uploads for the given task.
 
     Parameters:
-      task (str): An identifier of the task. Supported values are 'master', 'main',  'validation', 'online', 'prompt', data', 'mc', 'analysis'
+      task (str): An identifier of the task. Supported values are 'master', 'main', 'validation', 'online', 'prompt', data', 'mc', 'analysis'
 
     Returns:
       The name of the GT for uploads or None if a new GT should be created by the client for each upload request.
     """
 
-    if task == 'master': # master is kept only for backward compatibility
+    if task == 'master':  # master is kept only for backward compatibility
         return None
     elif task == 'main':
         return None
@@ -401,7 +401,7 @@ def jira_global_tag_v2(task):
       existing issue or a tuple for an adjusted description or None if no jira issue should be created.
     """
 
-    if task == 'master': # master is kept only for backward compatibility
+    if task == 'master':  # master is kept only for backward compatibility
         return {"assignee": {"name": "depietro"}}
     elif task == 'main':
         return {"assignee": {"name": "depietro"}}
