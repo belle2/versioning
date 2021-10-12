@@ -15,8 +15,8 @@ _recommended_release = 'light-2108-selene'
 
 # list of supported full releases
 _supported_releases = [
-    'release-04-02-09',
-    'release-05-01-22', 'release-05-02-17'
+    'release-05-01-22', 'release-05-02-17',
+    'release-06-00-00',
 ]
 
 # list of supported light releases
