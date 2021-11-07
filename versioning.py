@@ -15,8 +15,8 @@ _recommended_release = 'light-2110-tartarus'
 
 # list of supported full releases
 _supported_releases = [
-    'release-05-01-22', 'release-05-02-17',
-    'release-06-00-00',
+    'release-05-01-25', 'release-05-02-18',
+    'release-06-00-03',
 ]
 
 # list of supported light releases
