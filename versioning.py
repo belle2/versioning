@@ -55,8 +55,11 @@ def supported_release(release=None):
         # Return the latest full release
         return _supported_releases[-1]
     elif release.startswith('release-'):
+        # it is fine if a release newer than the latest supported one is used
+        if basf2_version(release) >= basf2_version(_supported_releases[-1]):
+            return release
         for supported in _supported_releases:
-            if basf2_version(release) <= basf2_version(supported):
+            if basf2_version(release) < basf2_version(supported):
                 return supported
 
     # update to latest supported light release
