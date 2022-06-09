@@ -21,7 +21,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2110-tartarus', 'light-2201-venus', 'light-2203-zeus', 'light-2205-abys'
+    'light-2104-poseidon', 'light-2201-venus', 'light-2203-zeus', 'light-2205-abys'
 ]
 
 assert _supported_releases == sorted(_supported_releases)
