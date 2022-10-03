@@ -254,7 +254,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     # tag to be used for analysis tools, depending on the release used for the analysis
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
     _all_supported_releases = _supported_releases + _supported_light_releases
-    analysis_tags = dict(zip(_all_supported_releases, ['analysis_tools_light-2205-abys'] * len(_all_supported_releases)))
+    analysis_tags = dict(zip(_all_supported_releases, ['analysis_tools_light-2207-bengal'] * len(_all_supported_releases)))
     analysis_tag = analysis_tags.get(recommended_release, None)
 
     # In case of B2BII we do not have metadata
