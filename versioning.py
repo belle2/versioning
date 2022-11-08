@@ -15,8 +15,8 @@ _recommended_release = 'light-2210-devonrex'
 
 # list of supported full releases
 _supported_releases = [
-    'release-05-01-25', 'release-05-02-18',
-    'release-06-00-03',
+    'release-05-01-25', 'release-05-02-19',
+    'release-06-00-14',
 ]
 
 # list of supported light releases
