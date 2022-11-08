@@ -111,7 +111,7 @@ def create_release_html(filename='index.html'):
 <ul>
 <li><a href="http://www.belle2.org">Belle II</a></li>
 <li><a href="https://confluence.desy.de/display/BI/Belle+II">Wiki</a></li>
-<li><a href="https://stash.desy.de/projects/B2/repos/software/browse">Git</a></li>
+<li><a href="https://stash.desy.de/projects/B2/repos/basf2/browse">Git</a></li>
 <li><a href="https://agira.desy.de/projects/BII">Issues</a></li>
 <li><a href="https://b2-master.belle2.org/development_build/index.html">Development Build</a></li>
 </ul>
