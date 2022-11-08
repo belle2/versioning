@@ -414,9 +414,9 @@ def jira_global_tag_v2(task):
     elif task == 'online':
         return {"assignee": {"name": "seokhee"}}
     elif task == 'prompt':
-        return {"assignee": {"name": "lzani"}}
+        return {"assignee": {"name": "mapr"}}
     elif task == 'data':
-        return {"assignee": {"name": "lzani"}}
+        return {"assignee": {"name": "mapr"}}
     elif task == 'mc':
         return {"assignee": {"name": "amartini"}}
     elif task == 'analysis':
