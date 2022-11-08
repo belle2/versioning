@@ -74,7 +74,7 @@ def supported_release(release=None):
 
 
 def get_recommended_training_release():
-    """Returns the recommended relase for training purposes"""
+    """Returns the recommended release for training purposes"""
     return supported_release("release-")
 
 
@@ -373,12 +373,12 @@ def jira_global_tag_v2(task):
 
     The following examples show
 
-    A) how to create a new jira issue in the BII project assigned to to user janedoe:
+    A) how to create a new jira issue in the BII project assigned to user janedoe:
 
         return {"assignee": {"name": "janedoe"}}
 
     B) how to create a sub-issue (type id 5) of BII-12345 in the BII project
-    assigned to user janedoe and a summary text containing the user name and time of the request::
+    assigned to user janedoe and a summary text containing the user name and time of the request:
 
         return {
             "project": {"key": "BII"},
@@ -388,12 +388,12 @@ def jira_global_tag_v2(task):
             "summary": "Example global tag request by {user} at {time}"
             }
 
-    C) how to add a comment to BII-12345::
+    C) how to add a comment to BII-12345:
 
         return "BII-12345"
 
     D) how to add a comment to BII-12345 with adjusted description containing only the global tag name
-    and the reason for a request::
+    and the reason for a request:
 
         return ("BII-12345", "Example comment for the global tag {tag} because of: {reason}")
 
