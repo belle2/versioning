@@ -298,6 +298,14 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     return result
 
 
+def recommended_b2bii_analysis_global_tag():
+    """
+    Get recommended global tag for B2BII analyses.
+    """
+
+    return 'analysis_b2bii'
+
+
 def upload_global_tag(task):
     """
     Get the global tag that is supposed to be used for uploads for the given task.
