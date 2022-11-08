@@ -141,7 +141,7 @@ def create_release_html(filename='index.html'):
 </div>
 
 <div id="footer">
-Copyright 2018-2019 Belle II software group <br />
+Copyright 2018-2022 Belle II software group <br />
 Uses icons from the gnome-colors package under the <a href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</a>
 and from http://www.famfamfam.com under the <a href="http://creativecommons.org/licenses/by/2.5/">Creative Commons Attribution 2.5 License</a>
 </div>
