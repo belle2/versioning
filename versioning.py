@@ -15,8 +15,8 @@ _recommended_release = 'light-2210-devonrex'
 
 # list of supported full releases
 _supported_releases = [
-    'release-05-01-25', 'release-05-02-18',
-    'release-06-00-03',
+    'release-05-01-25', 'release-05-02-19',
+    'release-06-00-14',
 ]
 
 # list of supported light releases
@@ -74,7 +74,7 @@ def supported_release(release=None):
 
 
 def get_recommended_training_release():
-    """Returns the recommended relase for training purposes"""
+    """Returns the recommended release for training purposes"""
     return supported_release("release-")
 
 
@@ -111,7 +111,7 @@ def create_release_html(filename='index.html'):
 <ul>
 <li><a href="http://www.belle2.org">Belle II</a></li>
 <li><a href="https://confluence.desy.de/display/BI/Belle+II">Wiki</a></li>
-<li><a href="https://stash.desy.de/projects/B2/repos/software/browse">Git</a></li>
+<li><a href="https://stash.desy.de/projects/B2/repos/basf2/browse">Git</a></li>
 <li><a href="https://agira.desy.de/projects/BII">Issues</a></li>
 <li><a href="https://b2-master.belle2.org/development_build/index.html">Development Build</a></li>
 </ul>
@@ -141,7 +141,7 @@ def create_release_html(filename='index.html'):
 </div>
 
 <div id="footer">
-Copyright 2018-2019 Belle II software group <br />
+Copyright 2018-2022 Belle II software group <br />
 Uses icons from the gnome-colors package under the <a href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</a>
 and from http://www.famfamfam.com under the <a href="http://creativecommons.org/licenses/by/2.5/">Creative Commons Attribution 2.5 License</a>
 </div>
@@ -150,13 +150,13 @@ and from http://www.famfamfam.com under the <a href="http://creativecommons.org/
 """
     table = ""
     recommended = ' (recommended)'
-    for supported in reversed(_supported_releases):
+    for supported in reversed(_supported_light_releases):
         table += (
             '<tr class="even">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' %
             (supported, supported, recommended, supported, supported))
         recommended = ''
     recommended = ' (recommended)'
-    for supported in reversed(_supported_light_releases):
+    for supported in reversed(_supported_releases):
         table += (
             '<tr class="odd">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' %
             (supported, supported, recommended, supported, supported))
@@ -298,6 +298,14 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     return result
 
 
+def recommended_b2bii_analysis_global_tag():
+    """
+    Get recommended global tag for B2BII analyses.
+    """
+
+    return 'analysis_b2bii'
+
+
 def upload_global_tag(task):
     """
     Get the global tag that is supposed to be used for uploads for the given task.
@@ -373,12 +381,12 @@ def jira_global_tag_v2(task):
 
     The following examples show
 
-    A) how to create a new jira issue in the BII project assigned to to user janedoe:
+    A) how to create a new jira issue in the BII project assigned to user janedoe:
 
         return {"assignee": {"name": "janedoe"}}
 
     B) how to create a sub-issue (type id 5) of BII-12345 in the BII project
-    assigned to user janedoe and a summary text containing the user name and time of the request::
+    assigned to user janedoe and a summary text containing the user name and time of the request:
 
         return {
             "project": {"key": "BII"},
@@ -388,12 +396,12 @@ def jira_global_tag_v2(task):
             "summary": "Example global tag request by {user} at {time}"
             }
 
-    C) how to add a comment to BII-12345::
+    C) how to add a comment to BII-12345:
 
         return "BII-12345"
 
     D) how to add a comment to BII-12345 with adjusted description containing only the global tag name
-    and the reason for a request::
+    and the reason for a request:
 
         return ("BII-12345", "Example comment for the global tag {tag} because of: {reason}")
 
@@ -414,9 +422,9 @@ def jira_global_tag_v2(task):
     elif task == 'online':
         return {"assignee": {"name": "seokhee"}}
     elif task == 'prompt':
-        return {"assignee": {"name": "lzani"}}
+        return {"assignee": {"name": "mapr"}}
     elif task == 'data':
-        return {"assignee": {"name": "lzani"}}
+        return {"assignee": {"name": "mapr"}}
     elif task == 'mc':
         return {"assignee": {"name": "amartini"}}
     elif task == 'analysis':
