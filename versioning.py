@@ -11,7 +11,7 @@ import os
 import shutil
 
 # recommended release
-_recommended_release = 'light-2210-devonrex'
+_recommended_release = 'light-2212-foldex'
 
 # list of supported full releases
 _supported_releases = [
@@ -21,7 +21,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2205-abys', 'light-2207-bengal', 'light-2209-calico', 'light-2210-devonrex'
+    'light-2205-abys', 'light-2209-calico', 'light-2210-devonrex', 'light-2212-foldex'
 ]
 
 assert _supported_releases == sorted(_supported_releases)
