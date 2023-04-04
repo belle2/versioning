@@ -73,97 +73,18 @@ def supported_release(release=None):
     return _supported_releases[-1]
 
 
+def get_supported_releases(light=False):
+    """Returns the list of recommended (light) releases"""
+
+    if light:
+        return reversed(_supported_light_releases)
+    else:
+        return reversed(_supported_releases)
+
+
 def get_recommended_training_release():
     """Returns the recommended release for training purposes"""
     return supported_release("release-")
-
-
-def create_release_html(filename='index.html'):
-    """
-    Create a html file with the links to the sphinx and doxygen documentations of the supported releases.
-
-    Parameters:
-      filename (str): The name the html file.
-    """
-
-    page = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta name="keywords" content="Belle II, basf2, documentation, doxygen, sphinx" />
-<meta name="description" content="The documentation of the Belle II software." />
-<title>Documentation of the Belle II software</title>
-
-<style type="text/css" media="all">
-@import "https://b2-master.belle2.org/build_style/index_documentation.css";
-</style>
-
-</head>
-
-<body>
-
-<div id="wrap">
-<div id="header">
-<div id="headerleft"></div>
-<div id="headerright"></div>
-<div id="topnavigation">
-<ul>
-<li><a href="http://www.belle2.org">Belle II</a></li>
-<li><a href="https://confluence.desy.de/display/BI/Belle+II">Wiki</a></li>
-<li><a href="https://gitlab.desy.de/belle2/software/basf2">Git</a></li>
-<li><a href="https://gitlab.desy.de/belle2/software/basf2/-/issues">Issues</a></li>
-<li><a href="https://b2-master.belle2.org/development_build/index.html">Development Build</a></li>
-</ul>
-</div>
-</div>
-
-<div id="content">
-
-<br/>
-<br/>
-<div id="resulttable">
-<div class="roundbox">
-<h2></h2>
-<table>
-<tbody>
-<tr class="odd">
-<th>Sphinx documentation</th>
-<th>Doxygen documentation</th>
-%s
-</tbody>
-</table>
-</div>
-<br/>
-</div>
-
-</div>
-</div>
-
-<div id="footer">
-Copyright 2018-2022 Belle II software group <br />
-Uses icons from the gnome-colors package under the <a href="http://www.gnu.org/licenses/gpl.html">GNU GENERAL PUBLIC LICENSE</a>
-and from http://www.famfamfam.com under the <a href="http://creativecommons.org/licenses/by/2.5/">Creative Commons Attribution 2.5 License</a>
-</div>
-</body>
-</html>
-"""
-    table = ""
-    recommended = ' (recommended)'
-    for supported in reversed(_supported_light_releases):
-        table += (
-            '<tr class="even">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' %
-            (supported, supported, recommended, supported, supported))
-        recommended = ''
-    recommended = ' (recommended)'
-    for supported in reversed(_supported_releases):
-        table += (
-            '<tr class="odd">\n<td><a href="sphinx/%s/index.html"><b>%s%s</b></a></td>\n<td><a href="%s/index.html"><b>%s</b></a></td>\n</tr>\n' %
-            (supported, supported, recommended, supported, supported))
-        recommended = ''
-    table += '<tr class="even">\n<td><a href="development/sphinx/index.html"><b>development</b></a></td>\n<td><a href="development/index.html"><b>development</b></a></td>\n</tr>\n'
-    with open(filename, 'w') as htmlfile:
-        htmlfile.write(page % table)
 
 
 def recommended_global_tags(release, mc=False, analysis=True, input_tags=None):
