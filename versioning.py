@@ -386,11 +386,7 @@ def create_jupyter_kernels(target_dir='~/.local/share/jupyter/kernels', top_dir=
                 os.path.join(top_dir, "tools", "b2execute"), "-x", "python3",
                 release, "-m", "ipykernel_launcher",
                 "-f", "{connection_file}",
-            ],
-            "env": {
-                "VO_BELLE2_SW_DIR": top_dir,
-                "BELLE2_TOOLS": tools_dir
-            }
+            ]
         }
         with open(os.path.join(kernel_dir, "kernel.json"), "w") as specfile:
             json.dump(spec, specfile, indent=4)
