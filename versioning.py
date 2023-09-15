@@ -84,7 +84,7 @@ def get_supported_releases(light=False):
 
 def get_recommended_training_release():
     """Returns the recommended release for training purposes"""
-    return supported_release("release-")
+    return supported_release("light")
 
 
 def recommended_global_tags(release, mc=False, analysis=True, input_tags=None):
