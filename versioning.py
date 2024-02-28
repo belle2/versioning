@@ -228,6 +228,17 @@ def recommended_b2bii_analysis_global_tag():
     return 'analysis_b2bii'
 
 
+def performance_recommendation_global_tag():
+    """
+    Get global tag and payload name of the performance recommendation.
+    """
+
+    result = {'global_tag' : 'analysis_performance_recommendation',
+              'payload' : 'recommendation_payload'}
+
+    return result
+
+
 def upload_global_tag(task):
     """
     Get the global tag that is supposed to be used for uploads for the given task.
