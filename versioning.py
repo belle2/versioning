@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 """
 Management of software versions and global tags.
@@ -17,7 +16,7 @@ _recommended_release = 'light-2311-nebelung'
 _supported_releases = [
     'release-05-01-25', 'release-05-02-19',
     'release-06-00-14', 'release-06-01-15', 'release-06-02-00',
-    'release-08-00-05', 'release-08-01-01'
+    'release-08-00-05', 'release-08-01-02'
 ]
 
 # list of supported light releases
