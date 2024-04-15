@@ -10,7 +10,7 @@ import os
 import shutil
 
 # recommended release
-_recommended_release = 'light-2311-nebelung'
+_recommended_release = 'light-2403-persian'
 
 # list of supported full releases
 _supported_releases = [
@@ -21,7 +21,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2205-abys', 'light-2305-korat', 'light-2309-munchkin', 'light-2311-nebelung'
+   'light-2305-korat', 'light-2309-munchkin', 'light-2311-nebelung', 'light-2403-persian'
 ]
 
 assert _supported_releases == sorted(_supported_releases)
