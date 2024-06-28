@@ -16,7 +16,7 @@ _recommended_release = 'light-2405-quaxo'
 _supported_releases = [
     'release-05-01-25', 'release-05-02-19',
     'release-06-00-14', 'release-06-01-15', 'release-06-02-00',
-    'release-08-00-08', 'release-08-01-06'
+    'release-08-00-09', 'release-08-01-07'
 ]
 
 # list of supported light releases
