@@ -16,7 +16,7 @@ _recommended_release = 'light-2409-toyger'
 _supported_releases = [
     'release-05-01-25', 'release-05-02-19',
     'release-06-00-14', 'release-06-01-15', 'release-06-02-00',
-    'release-08-00-10', 'release-08-01-09'
+    'release-08-00-10', 'release-08-01-10', 'release-08-02-00'
 ]
 
 # list of supported light releases
