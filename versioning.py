@@ -10,7 +10,7 @@ import os
 import shutil
 
 # recommended release
-_recommended_release = 'light-2409-toyger'
+_recommended_release = 'light-2411-aldebaran'
 
 # list of supported full releases
 _supported_releases = [
@@ -21,7 +21,7 @@ _supported_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2401-ocicat', 'light-2403-persian', 'light-2405-quaxo', 'light-2406-ragdoll', 'light-2409-toyger'
+    'light-2401-ocicat', 'light-2403-persian', 'light-2405-quaxo', 'light-2406-ragdoll', 'light-2409-toyger', 'light-2411-aldebaran'
 ]
 
 assert _supported_releases == sorted(_supported_releases)
@@ -175,7 +175,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     # tag to be used for analysis tools, depending on the release used for the analysis
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
     _all_supported_releases = _supported_releases + _supported_light_releases + ['release-09-00-00']
-    analysis_tags = dict(zip(_all_supported_releases, ['analysis_tools_light-2406-ragdoll'] * len(_all_supported_releases)))
+    analysis_tags = dict(zip(_all_supported_releases, ['analysis_tools_light-2411-aldebaran'] * len(_all_supported_releases)))
     analysis_tag = analysis_tags.get(recommended_release, None)
 
     # In case of B2BII we do not have metadata
