@@ -14,9 +14,9 @@ _recommended_release = 'light-2411-aldebaran'
 
 # list of supported full releases
 _supported_releases = [
-    'release-05-01-25', 'release-05-02-19',
     'release-06-00-14', 'release-06-01-15', 'release-06-02-00',
-    'release-08-00-10', 'release-08-01-10', 'release-08-02-05'
+    'release-08-00-10', 'release-08-01-10', 'release-08-02-05',
+    'release-09-00-00'
 ]
 
 # list of supported light releases
@@ -174,7 +174,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
 
     # tag to be used for analysis tools, depending on the release used for the analysis
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
-    _all_supported_releases = _supported_releases + _supported_light_releases + ['release-09-00-00']
+    _all_supported_releases = _supported_releases + _supported_light_releases
     analysis_tags = dict(zip(_all_supported_releases, ['analysis_tools_light-2411-aldebaran'] * len(_all_supported_releases)))
     analysis_tag = analysis_tags.get(recommended_release, None)
 
