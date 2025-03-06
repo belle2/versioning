@@ -174,7 +174,15 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
 
     # tag to be used for analysis tools, depending on the release used for the analysis
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
-    analysis_tags = dict(zip(_supported_releases, ['analysis_tools_light-2501-betelgeuse'] * len(_supported_releases)))
+    analysis_tags = {}
+    for release in _supported_releases:
+        full_release_number = release.split("-")[1]
+        if full_release_number == "06":
+            analysis_tags[release] = ['analysis_tools_light-2106-rhea']
+        elif full_release_number == "08":
+            analysis_tags[release] = ['analysis_tools_light-2305-korat']
+        elif full_release_number == "09":
+            analysis_tags[release] = ['analysis_tools_light-2406-ragdoll']
     for light_release in _supported_light_releases:
         analysis_tags[light_release] = [f'analysis_tools_{light_release}']
     analysis_tag = analysis_tags.get(recommended_release, None)
