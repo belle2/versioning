@@ -185,7 +185,10 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
             analysis_tags[_supported_release] = 'analysis_tools_light-2406-ragdoll'
     for light_release in _supported_light_releases:
         analysis_tags[light_release] = f'analysis_tools_{light_release}'
-    analysis_tag = analysis_tags.get(recommended_release, None)
+    if release.startswith('release') or release.startswith('light') or release.startswith('pre'):
+        analysis_tag = analysis_tags.get(recommended_release, None)
+    else:
+        analysis_tag = analysis_tags.get(_recommended_release, None)
 
     # In case of B2BII we do not have metadata
     if metadata == []:
