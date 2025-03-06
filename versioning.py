@@ -178,13 +178,13 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     for _supported_release in _supported_releases:
         full_release_number = _supported_release.split("-")[1]
         if full_release_number == "06":
-            analysis_tags[_supported_release] = ['analysis_tools_light-2106-rhea']
+            analysis_tags[_supported_release] = 'analysis_tools_light-2106-rhea'
         elif full_release_number == "08":
-            analysis_tags[_supported_release] = ['analysis_tools_light-2305-korat']
+            analysis_tags[_supported_release] = 'analysis_tools_light-2305-korat'
         elif full_release_number == "09":
-            analysis_tags[_supported_release] = ['analysis_tools_light-2406-ragdoll']
+            analysis_tags[_supported_release] = 'analysis_tools_light-2406-ragdoll'
     for light_release in _supported_light_releases:
-        analysis_tags[light_release] = [f'analysis_tools_{light_release}']
+        analysis_tags[light_release] = f'analysis_tools_{light_release}'
     analysis_tag = analysis_tags.get(recommended_release, None)
 
     # In case of B2BII we do not have metadata
