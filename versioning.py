@@ -59,7 +59,7 @@ def supported_release(release=None):
         if basf2_version(release) >= basf2_version(_supported_releases[-1]):
             return release
         for supported in _supported_releases:
-            if basf2_version(release) < basf2_version(supported):
+            if basf2_version(release) <= basf2_version(supported):
                 return supported
 
     # update to latest supported light release
@@ -174,9 +174,21 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
 
     # tag to be used for analysis tools, depending on the release used for the analysis
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
-    _all_supported_releases = _supported_releases + _supported_light_releases
-    analysis_tags = dict(zip(_all_supported_releases, ['analysis_tools_light-2411-aldebaran'] * len(_all_supported_releases)))
-    analysis_tag = analysis_tags.get(recommended_release, None)
+    analysis_tags = {}
+    for _supported_release in _supported_releases:
+        full_release_number = _supported_release.split("-")[1]
+        if full_release_number == "06":
+            analysis_tags[_supported_release] = 'analysis_tools_light-2106-rhea'
+        elif full_release_number == "08":
+            analysis_tags[_supported_release] = 'analysis_tools_light-2305-korat'
+        elif full_release_number == "09":
+            analysis_tags[_supported_release] = 'analysis_tools_light-2406-ragdoll'
+    for light_release in _supported_light_releases:
+        analysis_tags[light_release] = f'analysis_tools_{light_release}'
+    if release.startswith('release') or release.startswith('light') or release.startswith('pre'):
+        analysis_tag = analysis_tags.get(recommended_release, None)
+    else:
+        analysis_tag = analysis_tags.get(_recommended_release, None)
 
     # In case of B2BII we do not have metadata
     if metadata == []:
