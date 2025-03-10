@@ -4,7 +4,7 @@
 Management of software versions and global tags.
 """
 
-from distutils.version import LooseVersion
+from packaging.version import Version
 import json
 import os
 import shutil
@@ -45,7 +45,7 @@ def supported_release(release=None):
         return _recommended_release
 
     def basf2_version(release):
-        return LooseVersion('.'.join(release.split('-')[1:]))
+        return Version('.'.join(release.split('-')[1:]))
 
     # update to next supported release
     if release.startswith('pre'):
