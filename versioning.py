@@ -16,7 +16,7 @@ _recommended_release = 'light-2503-ceres'
 _supported_releases = [
     'release-06-00-14', 'release-06-01-15', 'release-06-02-00',
     'release-08-00-10', 'release-08-01-10', 'release-08-02-06',
-    'release-09-00-00'
+    'release-09-00-01'
 ]
 
 # list of supported light releases
