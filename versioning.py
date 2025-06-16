@@ -7,7 +7,9 @@ Management of software versions and global tags.
 from distutils.version import LooseVersion
 import json
 import os
+import re
 import shutil
+import subprocess
 
 # recommended release
 _recommended_release = 'light-2505-deimos'
@@ -188,7 +190,20 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     if release.startswith('release') or release.startswith('light') or release.startswith('pre'):
         analysis_tag = analysis_tags.get(recommended_release, None)
     else:
-        analysis_tag = analysis_tags.get(_recommended_release, None)
+        # most likely "release" is a git commit hash
+        if bool(re.fullmatch(r'[0-9a-f]{7,40}(-modified)?', release)):
+            found_ancestor = False
+            for _supported_release in reversed(_supported_releases):
+                # check if commit is an ancestor of the supported release
+                is_ancestor = subprocess.run(['git', 'merge-base', '--is-ancestor', _supported_release, release], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                if is_ancestor.returncode == 0:
+                    found_ancestor = True
+                    analysis_tag = analysis_tags.get(_supported_release, None)
+                    break
+            if not found_ancestor:
+                analysis_tag = analysis_tags.get(_recommended_release, None)
+        else:
+            analysis_tag = analysis_tags.get(_recommended_release, None)
 
     # In case of B2BII we do not have metadata
     if metadata == []:
