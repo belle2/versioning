@@ -193,13 +193,17 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         # most likely "release" is a git commit hash
         if bool(re.fullmatch(r'[0-9a-f]{7,40}(-modified)?', release)):
             found_ancestor = False
-            for _supported_release in reversed(_supported_releases):
-                # check if commit is an ancestor of the supported release
-                is_ancestor = subprocess.run(['git', 'merge-base', '--is-ancestor', _supported_release, release], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                if is_ancestor.returncode == 0:
-                    found_ancestor = True
-                    analysis_tag = analysis_tags.get(_supported_release, None)
-                    break
+            try:
+                # get the list of tags that are ancestors of the current branch
+                ancestor_tags = subprocess.check_output(["git", "for-each-ref", "--merged", "HEAD", "--sort=-creatordate", "--format=%(refname:short)", "refs/tags"],
+                                                        text=True).strip().splitlines()
+                for tag in ancestor_tags:
+                    if tag in _supported_releases or tag in _supported_light_releases:
+                        found_ancestor = True
+                        analysis_tag = analysis_tags.get(tag, None)
+                        break
+            except subprocess.CalledProcessError as e:
+                print("Error: Finding ancestor tags failed:", e)
             if not found_ancestor:
                 analysis_tag = analysis_tags.get(_recommended_release, None)
         else:
