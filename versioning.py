@@ -194,9 +194,10 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         if bool(re.fullmatch(r'[0-9a-f]{7,40}(-modified)?', release)):
             found_ancestor = False
             try:
+                reldir = os.environ.get('BELLE2_LOCAL_DIR', os.environ.get('BELLE2_ANALYSIS_DIR'))
                 # get the list of tags that are ancestors of the current branch
                 ancestor_tags = subprocess.check_output(["git", "for-each-ref", "--merged", "HEAD", "--sort=-creatordate", "--format=%(refname:short)", "refs/tags"],
-                                                        text=True).strip().splitlines()
+                                                        cwd=reldir, text=True).strip().splitlines()
                 for tag in ancestor_tags:
                     if tag in _supported_releases or tag in _supported_light_releases:
                         found_ancestor = True
