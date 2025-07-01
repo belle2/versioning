@@ -16,6 +16,7 @@ _recommended_release = 'light-2505-deimos'
 
 # list of supported full releases
 _supported_releases = [
+    'prerelease-10-00-00a',
     'release-06-00-14', 'release-06-01-16', 'release-06-02-00',
     'release-08-00-10', 'release-08-01-10', 'release-08-02-06', 'release-08-03-00',
     'release-09-00-01'
@@ -178,6 +179,8 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
     analysis_tags = {}
     for _supported_release in _supported_releases:
+        if _supported_release.startswith('pre'):
+           _supported_release = _supported_release[3:19]
         full_release_number = _supported_release.split("-")[1]
         if full_release_number == "06":
             analysis_tags[_supported_release] = 'analysis_tools_light-2106-rhea'
@@ -185,6 +188,8 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
             analysis_tags[_supported_release] = 'analysis_tools_light-2305-korat'
         elif full_release_number == "09":
             analysis_tags[_supported_release] = 'analysis_tools_light-2406-ragdoll'
+        elif full_release_number == "10":
+            analysis_tags[_supported_release] = 'analysis_tools_light-2505-deimos'
     for light_release in _supported_light_releases:
         analysis_tags[light_release] = 'analysis_tools_' + light_release
     if release.startswith('release') or release.startswith('light') or release.startswith('pre'):
