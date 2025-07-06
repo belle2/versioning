@@ -206,6 +206,8 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
                 for tag in ancestor_tags:
                     if tag in _supported_releases or tag in _supported_light_releases:
                         found_ancestor = True
+                        if tag.startswith('pre'):
+                            tag = tag[3:19]
                         analysis_tag = analysis_tags.get(tag, None)
                         break
             except subprocess.CalledProcessError as e:
