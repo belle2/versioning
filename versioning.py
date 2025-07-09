@@ -16,10 +16,14 @@ _recommended_release = 'light-2505-deimos'
 
 # list of supported full releases
 _supported_releases = [
-    'prerelease-10-00-00a',
     'release-06-00-14', 'release-06-01-16', 'release-06-02-00',
     'release-08-00-10', 'release-08-01-10', 'release-08-02-06', 'release-08-03-00',
     'release-09-00-01'
+]
+
+# list of supported prereleases
+_supported_pre_releases = [
+    'prerelease-10-00-00a',
 ]
 
 # list of supported light releases
@@ -28,6 +32,7 @@ _supported_light_releases = [
 ]
 
 assert _supported_releases == sorted(_supported_releases)
+assert _supported_pre_releases == sorted(_supported_pre_releases)
 assert _supported_light_releases == sorted(_supported_light_releases)
 
 
@@ -50,18 +55,16 @@ def supported_release(release=None):
     def basf2_version(release):
         return LooseVersion('.'.join(release.split('-')[1:]))
 
-    # update to next supported release
-    if release.startswith('pre'):
-        release = release[3:19]
-
     if release == "release-":
         # Return the latest full release
         return _supported_releases[-1]
-    elif release.startswith('release-'):
+    elif release == "prerelease-":
+        return _supported_pre_releases[-1]
+    elif release.startswith('release-') or release.startswith('prerelease-'):
         # it is fine if a release newer than the latest supported one is used
-        if basf2_version(release) >= basf2_version(_supported_releases[-1]):
+        if basf2_version(release) >= basf2_version(_supported_releases[-1]) or basf2_version(release) >= basf2_version(_supported_pre_releases[-1]):
             return release
-        for supported in _supported_releases:
+        for supported in _supported_releases + _supported_pre_releases:
             if basf2_version(release) <= basf2_version(supported):
                 return supported
 
@@ -82,7 +85,7 @@ def get_supported_releases(light=False):
     if light:
         return reversed(_supported_light_releases)
     else:
-        return reversed(_supported_releases)
+        return list(reversed(_supported_releases)) + _supported_pre_releases
 
 
 def get_recommended_training_release():
@@ -179,8 +182,6 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     # analysis_tags provides a mapping of supported release to the recommended analysis GT
     analysis_tags = {}
     for _supported_release in _supported_releases:
-        if _supported_release.startswith('pre'):
-           _supported_release = _supported_release[3:19]
         full_release_number = _supported_release.split("-")[1]
         if full_release_number == "06":
             analysis_tags[_supported_release] = 'analysis_tools_light-2106-rhea'
@@ -190,6 +191,10 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
             analysis_tags[_supported_release] = 'analysis_tools_light-2406-ragdoll'
         elif full_release_number == "10":
             analysis_tags[_supported_release] = 'analysis_tools_light-2505-deimos'
+    for _supported_pre_release in _supported_pre_releases:
+        full_release_number = _supported_pre_release.split("-")[1]
+        if full_release_number == "10":
+            analysis_tags[_supported_pre_release] = 'analysis_tools_light-2505-deimos'
     for light_release in _supported_light_releases:
         analysis_tags[light_release] = 'analysis_tools_' + light_release
     if release.startswith('release') or release.startswith('light') or release.startswith('pre'):
@@ -204,7 +209,7 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
                 ancestor_tags = subprocess.check_output(["git", "for-each-ref", "--merged", "HEAD", "--sort=-creatordate", "--format=%(refname:short)", "refs/tags"],
                                                         cwd=reldir, text=True).strip().splitlines()
                 for tag in ancestor_tags:
-                    if tag in _supported_releases or tag in _supported_light_releases:
+                    if tag in _supported_releases or tag in _supported_pre_releases or tag in _supported_light_releases:
                         found_ancestor = True
                         if tag.startswith('pre'):
                             tag = tag[3:19]
@@ -424,7 +429,7 @@ def create_jupyter_kernels(target_dir='~/.local/share/jupyter/kernels', top_dir=
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
 
-    for release in _supported_releases + _supported_light_releases:
+    for release in _supported_releases + _supported_pre_releases + _supported_light_releases:
         name = release
         if name.startswith("release"):
             name = release.rsplit("-", 1)[0]  # remove patch version from name
