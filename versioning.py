@@ -433,6 +433,8 @@ def create_jupyter_kernels(target_dir='~/.local/share/jupyter/kernels', top_dir=
         name = release
         if name.startswith("release"):
             name = release.rsplit("-", 1)[0]  # remove patch version from name
+        elif name.startswith("prerelease"):
+            name = "-".join(release.split("-")[:2]) # keep only major version in name
         kernel_dir = os.path.join(target_dir, "belle2_" + name)
         if not os.path.exists(kernel_dir):
             os.mkdir(kernel_dir)
