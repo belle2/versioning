@@ -276,8 +276,8 @@ def performance_recommendation_global_tag(campaign='MC15'):
     Get global tag and payload name of the performance recommendation.
     """
 
-    result = {'global_tag' : '',
-              'payload' : 'recommendation_payload'}
+    result = {'global_tag': '',
+              'payload': 'recommendation_payload'}
 
     if campaign == 'MC15':
         result['global_tag'] = 'analysis_performance_recommendation_MC15'
