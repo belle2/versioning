@@ -62,7 +62,8 @@ def supported_release(release=None):
         return _supported_pre_releases[-1]
     elif release.startswith('release-') or release.startswith('prerelease-'):
         # it is fine if a release newer than the latest supported one is used
-        if basf2_version(release) >= basf2_version(_supported_releases[-1]) or basf2_version(release) >= basf2_version(_supported_pre_releases[-1]):
+        if (release.startswith('release-') and basf2_version(release) >= basf2_version(_supported_releases[-1])) \
+           or (release.startswith('prerelease-') and basf2_version(release) >= basf2_version(_supported_pre_releases[-1])):
             return release
         for supported in _supported_releases + _supported_pre_releases:
             if basf2_version(release) <= basf2_version(supported):
