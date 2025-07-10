@@ -252,7 +252,8 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     if analysis_tag:
         result['tags'].insert(0, analysis_tag)
     else:
-        result['message'] += 'WARNING: There is no recommended analysis global tag.'
+        result['message'] += 'WARNING: There is no recommended analysis global tag.\n'
+        result['message'] += f'The latest analysis global tag is analysis_tools_{_recommended_release}.\n'
 
     # What else do we want to tell the user?
     if result['tags'] != base_tags:
