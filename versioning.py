@@ -208,14 +208,16 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
                 reldir = os.environ.get('BELLE2_LOCAL_DIR', os.environ.get('BELLE2_ANALYSIS_DIR'))
                 # get the list of tags that are ancestors of the current branch
                 ancestor_tags = subprocess.check_output(["git", "for-each-ref", "--merged", "HEAD", "--sort=-creatordate", "--format=%(refname:short)", "refs/tags"],
-                                                        cwd=reldir, text=True).strip().splitlines()
+                                                        cwd=reldir, text=True, stderr=subprocess.STDOUT).strip().splitlines()
                 for tag in ancestor_tags:
                     if tag in _supported_releases or tag in _supported_pre_releases or tag in _supported_light_releases:
                         found_ancestor = True
                         analysis_tag = analysis_tags.get(tag, None)
                         break
             except subprocess.CalledProcessError as e:
-                print("Error: Finding ancestor tags failed:", e)
+                if "not a git repository" in e.output:
+                    found_ancestor = True
+                    analysis_tag = analysis_tags.get(_recommended_release, None)
             if not found_ancestor:
                 analysis_tag = analysis_tags.get(_recommended_release, None)
         else:
