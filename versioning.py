@@ -28,7 +28,7 @@ _supported_pre_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2406-ragdoll', 'light-2409-toyger', 'light-2411-aldebaran', 'light-2501-betelgeuse', 'light-2503-ceres', 'light-2505-deimos'
+    'light-2409-toyger', 'light-2411-aldebaran', 'light-2501-betelgeuse', 'light-2503-ceres', 'light-2505-deimos', 'light-2507-europa'
 ]
 
 assert _supported_releases == sorted(_supported_releases)
