@@ -12,7 +12,7 @@ import shutil
 import subprocess
 
 # recommended release
-_recommended_release = 'light-2505-deimos'
+_recommended_release = 'light-2507-europa'
 
 # list of supported full releases
 _supported_releases = [
