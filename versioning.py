@@ -12,13 +12,13 @@ import shutil
 import subprocess
 
 # recommended release
-_recommended_release = 'light-2507-europa'
+_recommended_release = 'light-2509-fornax'
 
 # list of supported full releases
 _supported_releases = [
     'release-06-00-14', 'release-06-01-16', 'release-06-02-00',
     'release-08-00-10', 'release-08-01-10', 'release-08-02-06', 'release-08-03-00',
-    'release-09-00-03'
+    'release-09-00-04'
 ]
 
 # list of supported prereleases
@@ -28,7 +28,7 @@ _supported_pre_releases = [
 
 # list of supported light releases
 _supported_light_releases = [
-    'light-2409-toyger', 'light-2411-aldebaran', 'light-2501-betelgeuse', 'light-2503-ceres', 'light-2505-deimos', 'light-2507-europa'
+    'light-2411-aldebaran', 'light-2501-betelgeuse', 'light-2503-ceres', 'light-2505-deimos', 'light-2507-europa', 'light-2509-fornax'
 ]
 
 assert _supported_releases == sorted(_supported_releases)
