@@ -18,7 +18,7 @@ _recommended_release = 'light-2509-fornax'
 _supported_releases = [
     'release-06-00-14', 'release-06-01-16', 'release-06-02-00',
     'release-08-00-10', 'release-08-01-10', 'release-08-02-06', 'release-08-03-00',
-    'release-09-00-04'
+    'release-09-00-06'
 ]
 
 # list of supported prereleases
