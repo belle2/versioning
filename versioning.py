@@ -12,7 +12,7 @@ import shutil
 import subprocess
 
 # recommended release
-_recommended_release = 'light-2511-gacrux'
+_recommended_release = 'light-2601-hyperion'
 
 # list of supported full releases
 _supported_releases = [
