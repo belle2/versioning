@@ -33,9 +33,13 @@ class TestVersioning(unittest.TestCase):
         self.assertEqual(
             supported_release(_supported_pre_releases[0]), _supported_pre_releases[0]
         )
-        # Test with a newer prerelease
+        # Test with a newer prerelease that is not explicitly in the list but should be considered supported
         self.assertEqual(
-            supported_release("prerelease-10-00-00z"), "prerelease-10-00-00z"
+            supported_release(_supported_pre_releases[-1][:-1]+'z'), _supported_pre_releases[-1][:-1]+'z'
+        )
+        # Test with a prerelease that should snap to the next supported one
+        self.assertEqual(
+            supported_release('prerelease-10-00-00z'), _supported_pre_releases[-1]
         )
 
     def test_supported_release_light(self):
