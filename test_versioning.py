@@ -57,7 +57,7 @@ class TestVersioning(unittest.TestCase):
 
     def test_supported_release_unknown(self):
         # Test with an unknown release, should return the latest full release
-        self.assertEqual(supported_release("unknown-release"), "release-09-00-09")
+        self.assertEqual(supported_release("unknown-release"), _supported_releases[-1])
 
     def test_get_supported_releases(self):
         # Test get_supported_releases without light argument
