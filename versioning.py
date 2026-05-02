@@ -23,7 +23,7 @@ _supported_releases = [
 
 # list of supported prereleases
 _supported_pre_releases = [
-    'prerelease-10-00-00a',
+    'prerelease-10-00-00a', 'prerelease-11-00-00a',
 ]
 
 # list of supported light releases
@@ -196,6 +196,8 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
         full_release_number = _supported_pre_release.split("-")[1]
         if full_release_number == "10":
             analysis_tags[_supported_pre_release] = 'analysis_tools_light-2505-deimos'
+        elif full_release_number == "11":
+            analysis_tags[_supported_pre_release] = 'analysis_tools_light-2603-ina'
     for light_release in _supported_light_releases:
         analysis_tags[light_release] = 'analysis_tools_' + light_release
     if release.startswith('release') or release.startswith('light') or release.startswith('pre'):
