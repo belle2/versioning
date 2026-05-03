@@ -13,7 +13,7 @@ test_all_versions:
   stage: test
   parallel:
     matrix:
-      - PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11"]
+      - PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
   image: python:${PYTHON_VERSION}-slim
   script: *test_script
 
