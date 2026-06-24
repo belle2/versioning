@@ -22,7 +22,7 @@ _supported_releases = [
 
 # list of supported prereleases
 _supported_pre_releases = [
-    'prerelease-10-00-00a', 'prerelease-11-00-00a',
+    'prerelease-11-00-00b',
 ]
 
 # list of supported light releases
