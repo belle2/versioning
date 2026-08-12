@@ -371,6 +371,8 @@ def performance_recommendation_global_tag(campaign='MC15'):
         result['global_tag'] = 'analysis_performance_recommendation_MC15'
     elif campaign == 'MC16':
         result['global_tag'] = 'analysis_performance_recommendation_MC16'
+    elif campaign == 'rel09':
+        result['global_tag'] = 'analysis_performance_recommendation_rel09'
 
     return result
 
