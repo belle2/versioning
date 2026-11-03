@@ -17,12 +17,12 @@ _recommended_release = 'light-2609-luna'
 _supported_releases = [
     'release-06-00-14', 'release-06-01-16', 'release-06-02-00',
     'release-08-00-10', 'release-08-01-10', 'release-08-02-09', 'release-08-03-03',
-    'release-09-00-20'
+    'release-09-00-20',
+    'release-11-00-00'
 ]
 
 # list of supported prereleases
 _supported_pre_releases = [
-    'prerelease-11-00-00e'
 ]
 
 # list of supported light releases
@@ -143,11 +143,13 @@ def supported_release(release=None):
         # Return the latest full release
         return _supported_releases[-1]
     elif release == "prerelease-":
-        return _supported_pre_releases[-1]
+        # Return the latest prerelease, or the latest full release if no prerelease is supported
+        return _supported_pre_releases[-1] if _supported_pre_releases else _supported_releases[-1]
     elif release.startswith('release-') or release.startswith('prerelease-'):
         # it is fine if a release newer than the latest supported one is used
         if (release.startswith('release-') and basf2_version(release) >= basf2_version(_supported_releases[-1])) \
-           or (release.startswith('prerelease-') and basf2_version(release) >= basf2_version(_supported_pre_releases[-1])):
+           or (release.startswith('prerelease-') and _supported_pre_releases
+               and basf2_version(release) >= basf2_version(_supported_pre_releases[-1])):
             return release
         for supported in _supported_releases + _supported_pre_releases:
             if basf2_version(release) <= basf2_version(supported):

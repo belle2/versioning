@@ -24,22 +24,32 @@ class TestVersioning(unittest.TestCase):
             supported_release(_supported_releases[3]), _supported_releases[3]
         )
         # Test with a newer full release that is not explicitly in the list but should be considered supported
-        self.assertEqual(supported_release("release-09-99-10"), "release-09-99-10")
+        latest_release = _supported_releases[-1]
+        base, patch = latest_release.rsplit("-", 1)
+        newer_release = f"{base}-{int(patch) + 1:02d}"
+        self.assertEqual(supported_release(newer_release), newer_release)
         # Test with a release that should snap to the next supported one
         self.assertEqual(supported_release("release-06-00-00"), _supported_releases[0])
 
     def test_supported_release_prerelease(self):
-        # Test with a supported prerelease
+        if _supported_pre_releases:
+            # Test with a supported prerelease
+            self.assertEqual(
+                supported_release(_supported_pre_releases[0]), _supported_pre_releases[0]
+            )
+            # Test with a newer prerelease that is not explicitly in the list but should be considered supported
+            self.assertEqual(
+                supported_release(_supported_pre_releases[-1][:-1]+'z'), _supported_pre_releases[-1][:-1]+'z'
+            )
+        else:
+            # If no prerelease is officially supported, newer prereleases fall back to the latest full release
+            self.assertEqual(
+                supported_release("prerelease-99-00-00z"), _supported_releases[-1]
+            )
+
+        # Test with a prerelease that should snap to the next supported full release
         self.assertEqual(
-            supported_release(_supported_pre_releases[0]), _supported_pre_releases[0]
-        )
-        # Test with a newer prerelease that is not explicitly in the list but should be considered supported
-        self.assertEqual(
-            supported_release(_supported_pre_releases[-1][:-1]+'z'), _supported_pre_releases[-1][:-1]+'z'
-        )
-        # Test with a prerelease that should snap to the next supported one
-        self.assertEqual(
-            supported_release('prerelease-10-00-00z'), _supported_pre_releases[-1]
+            supported_release('prerelease-00-00-00z'), _supported_releases[0]
         )
 
     def test_supported_release_light(self):
@@ -56,8 +66,13 @@ class TestVersioning(unittest.TestCase):
     def test_supported_release_latest(self):
         # Test with "release-" should return the latest full release
         self.assertEqual(supported_release("release-"), _supported_releases[-1])
-        # Test with "prerelease-" should return the latest prerelease
-        self.assertEqual(supported_release("prerelease-"), _supported_pre_releases[-1])
+        # Test with "prerelease-" should return the latest prerelease, if any
+        expected_pre_release = (
+            _supported_pre_releases[-1]
+            if _supported_pre_releases
+            else _supported_releases[-1]
+        )
+        self.assertEqual(supported_release("prerelease-"), expected_pre_release)
 
     def test_supported_release_unknown(self):
         # Test with an unknown release, should return the latest full release
@@ -68,7 +83,10 @@ class TestVersioning(unittest.TestCase):
         releases = get_supported_releases()
         self.assertIsInstance(releases, list)
         self.assertIn(_supported_releases[-1], releases)
-        self.assertIn(_supported_pre_releases[-1], releases)
+        if _supported_pre_releases:
+            self.assertIn(_supported_pre_releases[-1], releases)
+        else:
+            self.assertFalse(any(release.startswith("prerelease-") for release in releases))
         self.assertNotIn(_recommended_release, releases)
 
         # Test get_supported_releases with light=True
@@ -76,7 +94,7 @@ class TestVersioning(unittest.TestCase):
         self.assertIsInstance(light_releases, list)
         self.assertIn(_recommended_release, light_releases)
         self.assertNotIn(_supported_releases[-1], light_releases)
-        self.assertNotIn(_supported_pre_releases[-1], light_releases)
+        self.assertFalse(any(release.startswith("prerelease-") for release in light_releases))
 
     def test_get_recommended_training_release(self):
         self.assertEqual(get_recommended_training_release(), _recommended_release)
@@ -89,8 +107,6 @@ class TestVersioning(unittest.TestCase):
         expected_tags = [
             "analysis_tools_light-2406-ragdoll",
             "online",
-            "mc_production_mc12",
-            "data_reprocessing_proc9",
         ]
         self.assertIsInstance(result, dict)
         self.assertListEqual(sorted(result["tags"]), sorted(expected_tags))
@@ -114,8 +130,6 @@ class TestVersioning(unittest.TestCase):
         expected_tags = [
             "analysis_tools_light-2406-ragdoll",
             "online",
-            "mc_production_mc12",
-            "data_reprocessing_proc9",
             "main_v1",
         ]
         self.assertIsInstance(result, dict)
@@ -146,7 +160,6 @@ class TestVersioning(unittest.TestCase):
         expected_tags = [
             "analysis_tools_light-2406-ragdoll",
             "online",
-            "data_reprocessing_proc9",
         ]
         self.assertIsInstance(result, dict)
         self.assertListEqual(sorted(result["tags"]), sorted(expected_tags))
@@ -158,6 +171,15 @@ class TestVersioning(unittest.TestCase):
             "The recommended tags differ from the base tags: \nUse the default conditions configuration if you want to take the base tags.\n",
             result["message"],
         )
+
+    def test_recommended_global_tags_v2_latest_release(self):
+        # Data and MC tags are only mapped for the latest full release
+        result = recommended_global_tags_v2(
+            release=_supported_releases[-1], base_tags=[], user_tags=[], metadata=None
+        )
+        self.assertIn("data_reprocessing_proc9", result["tags"])
+        self.assertIn("mc_production_mc12", result["tags"])
+        self.assertIn("online", result["tags"])
 
     def test_recommended_global_tags_b2bii(self):
         # Test for B2BII case (metadata is an empty list)
