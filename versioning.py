@@ -40,7 +40,6 @@ _analysis_tags_per_major_version = {
     '06': 'analysis_tools_light-2106-rhea',
     '08': 'analysis_tools_light-2305-korat',
     '09': 'analysis_tools_light-2406-ragdoll',
-    '10': 'analysis_tools_light-2505-deimos',
     '11': 'analysis_tools_light-2603-ina',
 }
 
