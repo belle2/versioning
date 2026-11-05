@@ -34,6 +34,15 @@ assert _supported_releases == sorted(_supported_releases)
 assert _supported_pre_releases == sorted(_supported_pre_releases)
 assert _supported_light_releases == sorted(_supported_light_releases)
 
+# mapping of the major version of full releases and prereleases to the recommended analysis GT;
+# light releases use their own analysis GT, analysis_tools_<light release>
+_analysis_tags_per_major_version = {
+    '06': 'analysis_tools_light-2106-rhea',
+    '08': 'analysis_tools_light-2305-korat',
+    '09': 'analysis_tools_light-2406-ragdoll',
+    '11': 'analysis_tools_light-2603-ina',
+}
+
 class LooseVersion(object):
     """
     A standalone implementation of version number comparisons.
@@ -166,6 +175,20 @@ def supported_release(release=None):
     return _supported_releases[-1]
 
 
+def _get_analysis_tag(release):
+    """
+    Returns the recommended analysis GT for the given (supported) release, or None if there is none.
+
+    Full releases and prereleases are mapped by major version, so that also releases newer than
+    the latest supported one (e.g. a new patch release) get the analysis GT of their major version.
+    """
+    if release in _supported_light_releases:
+        return 'analysis_tools_' + release
+    if release.startswith('release-') or release.startswith('prerelease-'):
+        return _analysis_tags_per_major_version.get(release.split('-')[1], None)
+    return None
+
+
 def get_supported_releases(light=False):
     """Returns the list of recommended (light) releases"""
 
@@ -266,28 +289,9 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
     mc_tag = mc_tags.get(recommended_release, None)
 
     # tag to be used for analysis tools, depending on the release used for the analysis
-    # analysis_tags provides a mapping of supported release to the recommended analysis GT
-    analysis_tags = {}
-    for _supported_release in _supported_releases:
-        full_release_number = _supported_release.split("-")[1]
-        if full_release_number == "06":
-            analysis_tags[_supported_release] = 'analysis_tools_light-2106-rhea'
-        elif full_release_number == "08":
-            analysis_tags[_supported_release] = 'analysis_tools_light-2305-korat'
-        elif full_release_number == "09":
-            analysis_tags[_supported_release] = 'analysis_tools_light-2406-ragdoll'
-        elif full_release_number == "10":
-            analysis_tags[_supported_release] = 'analysis_tools_light-2505-deimos'
-    for _supported_pre_release in _supported_pre_releases:
-        full_release_number = _supported_pre_release.split("-")[1]
-        if full_release_number == "10":
-            analysis_tags[_supported_pre_release] = 'analysis_tools_light-2505-deimos'
-        elif full_release_number == "11":
-            analysis_tags[_supported_pre_release] = 'analysis_tools_light-2603-ina'
-    for light_release in _supported_light_releases:
-        analysis_tags[light_release] = 'analysis_tools_' + light_release
+    analysis_tag = None
     if release.startswith('release') or release.startswith('light') or release.startswith('pre'):
-        analysis_tag = analysis_tags.get(recommended_release, None)
+        analysis_tag = _get_analysis_tag(recommended_release)
     else:
         # most likely "release" is a git commit hash
         if bool(re.fullmatch(r'[0-9a-f]{7,40}(-modified)?', release)):
@@ -300,16 +304,16 @@ def recommended_global_tags_v2(release, base_tags, user_tags, metadata):
                 for tag in ancestor_tags:
                     if tag in _supported_releases or tag in _supported_pre_releases or tag in _supported_light_releases:
                         found_ancestor = True
-                        analysis_tag = analysis_tags.get(tag, None)
+                        analysis_tag = _get_analysis_tag(tag)
                         break
             except subprocess.CalledProcessError as e:
                 if "not a git repository" in e.output:
                     found_ancestor = True
-                    analysis_tag = analysis_tags.get(_recommended_release, None)
+                    analysis_tag = _get_analysis_tag(_recommended_release)
             if not found_ancestor:
-                analysis_tag = analysis_tags.get(_recommended_release, None)
+                analysis_tag = _get_analysis_tag(_recommended_release)
         else:
-            analysis_tag = analysis_tags.get(_recommended_release, None)
+            analysis_tag = _get_analysis_tag(_recommended_release)
 
     # In case of B2BII we do not have metadata
     if metadata == []:

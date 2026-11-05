@@ -1,9 +1,13 @@
+import subprocess
 import unittest
+from unittest import mock
+
 from versioning import (
     _recommended_release,
     _supported_releases,
     _supported_pre_releases,
     _supported_light_releases,
+    _analysis_tags_per_major_version,
     supported_release,
     recommended_global_tags_v2,
     get_supported_releases,
@@ -209,6 +213,82 @@ class TestVersioning(unittest.TestCase):
             metadata=None,
         )
         self.assertIn(f"analysis_tools_{_supported_light_releases[2]}", result["tags"])
+
+    def test_recommended_global_tags_analysis_tag_release_11(self):
+        # release-11 must get an analysis GT (it was missing after moving it from prerelease to full release)
+        result = recommended_global_tags_v2(
+            release="release-11-00-00", base_tags=[], user_tags=[], metadata=None
+        )
+        self.assertEqual(result["tags"][0], "analysis_tools_light-2603-ina")
+        self.assertNotIn("There is no recommended analysis global tag", result["message"])
+
+    def test_analysis_tags_per_major_version_complete(self):
+        # Every supported full release and prerelease must have its major version mapped to an analysis GT
+        for release in _supported_releases + _supported_pre_releases:
+            with self.subTest(release=release):
+                self.assertIn(release.split("-")[1], _analysis_tags_per_major_version)
+
+    def test_recommended_global_tags_analysis_tag_all_supported(self):
+        # Every supported release must have a recommended analysis GT
+        for release in _supported_releases + _supported_pre_releases + _supported_light_releases:
+            with self.subTest(release=release):
+                result = recommended_global_tags_v2(
+                    release=release, base_tags=[], user_tags=[], metadata=None
+                )
+                self.assertTrue(result["tags"][0].startswith("analysis_tools_"))
+                self.assertNotIn("There is no recommended analysis global tag", result["message"])
+
+    def test_recommended_global_tags_analysis_tag_newer_patch_release(self):
+        # A patch release newer than the latest supported one gets the analysis GT of its major version
+        latest_release = _supported_releases[-1]
+        base, patch = latest_release.rsplit("-", 1)
+        newer_release = f"{base}-{int(patch) + 1:02d}"
+        latest_result = recommended_global_tags_v2(
+            release=latest_release, base_tags=[], user_tags=[], metadata=None
+        )
+        newer_result = recommended_global_tags_v2(
+            release=newer_release, base_tags=[], user_tags=[], metadata=None
+        )
+        self.assertTrue(newer_result["tags"][0].startswith("analysis_tools_"))
+        self.assertEqual(newer_result["tags"][0], latest_result["tags"][0])
+
+    def test_recommended_global_tags_analysis_tag_unknown_major(self):
+        # A release with an unknown major version has no analysis GT and the user is warned
+        result = recommended_global_tags_v2(
+            release="release-99-00-00", base_tags=[], user_tags=[], metadata=None
+        )
+        self.assertFalse(any(tag.startswith("analysis_") for tag in result["tags"]))
+        self.assertIn("There is no recommended analysis global tag", result["message"])
+
+    def test_recommended_global_tags_analysis_tag_git_hash(self):
+        # For a local build ("release" is a git hash) the analysis GT is taken
+        # from the closest supported ancestor tag
+        for ancestor, expected in [
+            ("release-11-00-00", "analysis_tools_light-2603-ina"),
+            ("release-09-00-20", "analysis_tools_light-2406-ragdoll"),
+            (_supported_light_releases[0], f"analysis_tools_{_supported_light_releases[0]}"),
+        ]:
+            with self.subTest(ancestor=ancestor):
+                with mock.patch("versioning.subprocess.check_output",
+                                return_value=f"some-unsupported-tag\n{ancestor}\nrelease-06-00-14\n"):
+                    result = recommended_global_tags_v2(
+                        release="846b6bffa5-modified", base_tags=[], user_tags=[], metadata=None
+                    )
+                self.assertEqual(result["tags"][0], expected)
+
+        # No supported ancestor or not a git repository: fall back to the recommended release
+        expected = f"analysis_tools_{_recommended_release}"
+        with mock.patch("versioning.subprocess.check_output", return_value="some-unsupported-tag\n"):
+            result = recommended_global_tags_v2(
+                release="846b6bffa5", base_tags=[], user_tags=[], metadata=None
+            )
+        self.assertEqual(result["tags"][0], expected)
+        error = subprocess.CalledProcessError(128, "git", output="fatal: not a git repository")
+        with mock.patch("versioning.subprocess.check_output", side_effect=error):
+            result = recommended_global_tags_v2(
+                release="846b6bffa5", base_tags=[], user_tags=[], metadata=None
+            )
+        self.assertEqual(result["tags"][0], expected)
 
     def test_recommended_b2bii_analysis_global_tag(self):
         self.assertEqual(recommended_b2bii_analysis_global_tag(), "analysis_b2bii")
