@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Management of software versions and global tags.
+Management of basf2 versions and recommended global tags.
 """
 
 import json
